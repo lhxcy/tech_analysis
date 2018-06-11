@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="@{http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="@{http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <title>专家检索</title>
+    <script type="text/javascript">
+        function loadData()
+        {
+            var json_data={
+                "name" : "张毅军",
+                "sex":""
+            };
+            $.ajax({
+                url : 'data_accept',
+                type : 'get',
+                data : {
+                    "name" : "",
+                    "sex":"",
+                    "functionname" : "高级工程师",
+                    "profield":"",
+                    "enterprisename" : "",
+                    "type":"",
+                    "education" : "博士研究生",
+                    "zhucedi":"",
+                    "tech_area" : "无细胞真皮,成纤维细胞,细胞相容性",
+                    "study_dir":"",
+                    "study_result" : "",
+                    "avoid_people":"David TRAINOR",
+                    "avoid_company" : "中国船舶重工集团公司江苏自动化研究所",
+                    "page_size":5,
+                    "current_page":1
+
+                },
+                contentType : 'application/json;charset=utf-8'   //中文需要加上charset=utf-8才正确
+            });
+        }
+        </script>
+</head>
+<body>
+<div class="col-lg-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">专家参数配置</div>
+        <div class="panel-body">
+            <form  action="greeting"  method="POST" target="_blank">
+                <div class="col-lg-6">
+                    </lable>专家姓名</lable><input type="text" name="name" class="form-control" placeholder="请输入名字"/>
+                    </lable>所属单位</lable><input type="text" name="ename" class="form-control" placeholder="请输入单位" />
+                    </lable>行业领域</lable><input type="text" name="profield" class="form-control" placeholder="请输入地区" />
+                    </lable>研究方向</lable><input type="text" name="study" class="form-control" placeholder="研究方向" />
+                    </lable>专家类型</lable><input type="text" name="type" class="form-control" placeholder="请输入地区" />
+                    </lable>回避人员</lable><input type="text" name="avoid_people" class="form-control" placeholder="研究方向" />
+                </div>
+                <div class="col-lg-6">
+                    <div class="col-lg-4"></lable>性别</lable><input type="text" name="sex" class="form-control" placeholder="请输入名字"/></div>
+                    <div class="col-lg-4 col-lg-offset-4"></lable>学历</lable><input type="text" name="education" class="form-control" placeholder="请输入名字"/></div>
+                    </lable>所在地区</lable><input type="text" name="city" class="form-control" placeholder="请输入单位" />
+                    </lable>技术领域</lable><input type="text" name="area" class="form-control" placeholder="请输入地区" />
+                    </lable>研究成果</lable><input type="text" name="study" class="form-control" placeholder="研究方向" />
+                    </lable>职称</lable><input type="text" name="function" class="form-control" placeholder="请输入地区" />
+                    </lable>回避机构</lable><input type="text" name="avoid_company" class="form-control" placeholder="研究方向" />
+                </div>
+
+
+                <button data-effect="st-effect-1" style="color:#000" type="button"  onclick="loadData()" >添加至任务</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

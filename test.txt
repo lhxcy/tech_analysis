@@ -1,0 +1,13 @@
+import jieba
+i= 1
+with open("tgt-train.txt","w",encoding='UTF-8') as w:
+	with open("train.zh",encoding='UTF-8') as r:
+		lines = r.readlines()
+		for line in lines:
+			lineCut = ' '.join(jieba.cut(line))
+			w.write(lineCut)
+			w.write('\n')
+			# if i < 10 :
+			# 	linecut = ' '.join(jieba.cut(line))
+			# 	print(linecut)
+			# 	i += 1

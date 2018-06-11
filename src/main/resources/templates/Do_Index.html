@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <!--<script type="text/javascript" src="/js/jquery.js"></script>-->
+    <title>索引的建立与删除</title>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#creat").click(function(){
+                $.post("creat_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+            $("#creatyangqi").click(function(){
+                $.post("creatyangqi_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+            $("#creatpaper").click(function(){
+                $.post("creatpaper_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+            $("#delete").click(function(){
+                $.post("delete_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+            $("#deleteyangqi").click(function(){
+                $.post("deleteyangqi_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+            $("#deletepaper").click(function(){
+                $.post("deletepaper_index",
+                    function(data,status){
+                        alert("数据: \n" + data + "\n状态: " + status);
+                    });
+            });
+        });
+    </script>
+</head>
+<body>
+<button id="creat" >建立专家索引</button>
+<button id="creatyangqi" >建立央企索引</button>
+<button id="creatpaper" >建立论文索引</button>
+<button id="delete">删除专家索引</button>
+<button id="deleteyangqi">删除央企索引</button>
+<button id="deletepaper">删除论文索引</button>
+</body>
+</html>
