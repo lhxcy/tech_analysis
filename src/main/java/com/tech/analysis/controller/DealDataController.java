@@ -18,7 +18,7 @@ public class DealDataController {
 
     /**
      *
-     * 构建计算相似度的模型
+     * 构建计算相似度的模型a
      *
      */
     @RequestMapping("/similarModel")
