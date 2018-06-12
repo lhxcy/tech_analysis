@@ -1,5 +1,6 @@
 package com.tech.analysis.Dao;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
@@ -14,6 +15,10 @@ import static org.neo4j.driver.v1.Values.parameters;
  */
 @Repository
 public class ImportNeo4j {
+    @Value("${neo4jdatapath}")
+    private String neo4jdatapath;
+    @Value("${neo4jpath}")
+    private String neo4jpath;
     private String basePath = System.getProperty("user.dir");
     //        String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
     /**
@@ -72,7 +77,8 @@ public class ImportNeo4j {
      */
     public void startNeo4j(){
 //        String[] parm = new String[] { "/usr/neo4j3.1.0/bin/neo4j", "start"};
-        String parm = "/usr/neo4j3.1.0/bin/neo4j start";
+//        String parm = "/usr/neo4j3.1.0/bin/neo4j start";
+        String parm = neo4jpath+" start";
         runConsoleOrder(parm);
     }
 
@@ -82,7 +88,8 @@ public class ImportNeo4j {
      */
     public void stopNeo4j(){
 //        String[] parm = new String[] { "/usr/neo4j3.1.0/bin/neo4j", "stop"};
-        String parm = "/usr/neo4j3.1.0/bin/neo4j stop";
+//        String parm = "/usr/neo4j3.1.0/bin/neo4j stop";
+        String parm = neo4jpath+" stop";
         runConsoleOrder(parm);
     }
 
@@ -96,7 +103,8 @@ public class ImportNeo4j {
         String csv_dir = basePath+File.separator+"file"+File.separator;
         try {
             stopNeo4j();
-            String deleteGraph_db =  "rm -rf /usr/neo4j3.1.0/data/databases/paperData1";
+//            String deleteGraph_db =  "rm -rf /usr/neo4j3.1.0/data/databases/paperData1";
+            String deleteGraph_db =  "rm -rf "+ neo4jdatapath+"/paperData1";
 //            String[] deleteGraph_db1 = new String[] { "rm", "-rf",
 //                    "/usr/neo4j3.1.0/data/databases/paperData1"};
 
@@ -106,15 +114,15 @@ public class ImportNeo4j {
 //                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/keywordsKey.csv",
 //                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/relationshipKey.csv"};
 
-//            String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
-//                    "/usr/neo4j3.1.0/data/databases/paperData1 " +
-//                    csv_dir+"keywordsKey.csv " +
-//                    csv_dir+"relationshipKey.csv";
+            String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
+                    neo4jdatapath+"/paperData1 " +
+                    csv_dir+"keywordsKey.csv " +
+                    csv_dir+"relationshipKey.csv";
 
-            String keyImport = "/bin/bash /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/import.sh " +
-                    "/usr/neo4j3.1.0/data/databases/paperData1 " +
-                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/keywordsKey.csv " +
-                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/relationshipKey.csv";
+//            String keyImport = "/bin/bash /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/import.sh " +
+//                    "/usr/neo4j3.1.0/data/databases/paperData1 " +
+//                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/keywordsKey.csv " +
+//                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/relationshipKey.csv";
 
 //            String[] yearKeyImport = new String[] { "/bin/bash",
 //                    "/home/zhzy/Downloads/xcy/batch-import-tool/import.sh",
@@ -122,23 +130,25 @@ public class ImportNeo4j {
 //                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/yearKeywordsKey.csv",
 //                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/yearRelationshipKey.csv"};
 
-//            String yearKeyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
-//                    "/usr/neo4j3.1.0/data/databases/paperData1 " +
-//                    csv_dir+"yearKeywordsKey.csv " +
-//                    csv_dir+"yearRelationshipKey.csv";
+            String yearKeyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
+                    neo4jdatapath+"/paperData1 "  +
+                    csv_dir+"yearKeywordsKey.csv " +
+                    csv_dir+"yearRelationshipKey.csv";
 
-            String yearKeyImport = "/bin/bash /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/import.sh " +
-                    "/usr/neo4j3.1.0/data/databases/paperData1 " +
-                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/yearKeywordsKey.csv " +
-                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/yearRelationshipKey.csv";
+//            String yearKeyImport = "/bin/bash /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/import.sh " +
+//                        "/usr/neo4j3.1.0/data/databases/paperData1 " +
+//                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/yearKeywordsKey.csv " +
+//                    "/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/file/yearRelationshipKey.csv";
 
             runConsoleOrder(deleteGraph_db);
             System.out.println("删除成功");
-            myUnzip.unZipFiles(new File("/usr/neo4j3.1.0/data/databases/paperData1.zip"), "/usr/neo4j3.1.0/data/databases/");
+            myUnzip.unZipFiles(new File(neo4jdatapath+"/paperData1.zip"), neo4jdatapath+"/");
 
             System.out.println("解压成功");
-            runConsoleOrder(keyImport);
-            runConsoleOrder(yearKeyImport);
+            runConsoleOrder(keyImport_no_plate);
+            runConsoleOrder(yearKeyImport_no_plate);
+//            runConsoleOrder(keyImport);
+//            runConsoleOrder(yearKeyImport);
             startNeo4j();
         }catch (Exception e){
             System.out.println("批量导入csv文件出错");

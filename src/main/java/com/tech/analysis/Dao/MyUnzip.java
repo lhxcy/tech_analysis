@@ -1,5 +1,8 @@
 package com.tech.analysis.Dao;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Enumeration;
@@ -68,16 +71,16 @@ public class MyUnzip {
             in.close();
             out.close();
         }
-        System.out.println("******************解压完毕********************");
+//        System.out.println("******************解压完毕********************");
         return;
     }
 
     //测试
-    public static void main(String[] args) {
-        try {
-            unZipFiles(new File("/usr/neo4j3.1.0/data/databases/paperData1.zip"), "/usr/neo4j3.1.0/data/databases/");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            unZipFiles(new File("/usr/neo4j3.1.0/data/databases/paperData1.zip"), "/usr/neo4j3.1.0/data/databases/");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
