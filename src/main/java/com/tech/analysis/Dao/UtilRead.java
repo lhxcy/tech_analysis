@@ -433,4 +433,23 @@ public class UtilRead {
         }
         return relationshipsNeo4j;
     }
+
+
+    public static HashMap<String,Integer>  readLocalWordsObject(){
+        FileInputStream freader;
+        HashMap<String,Integer>  locao_words = new HashMap<String,Integer> ();
+        try {
+//            String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipsNeo4jObject.dat";
+//        String filePath = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/relationshipsNeo4jObject.dat";
+            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"locao_wordsObject.dat";
+            freader = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(freader);
+            locao_words = (HashMap<String,Integer> )objectInputStream.readObject();
+            System.out.println("载入locao_words对象成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("载入locao_words对象失败！");
+        }
+        return locao_words;
+    }
 }

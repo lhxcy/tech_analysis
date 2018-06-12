@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.neo4j.driver.v1.Values.parameters;
@@ -32,14 +33,17 @@ public class GetCommunity {
 //            list.addAll(wordModel.distance(query));
 //            System.out.println(list);
 //            return list.toString();
-            return formatJsonString(getCommubityData(list));
+            return formatJsonString(getLocalCommubityData(list));
         }
     }
 
     public String getJsonArrayForKeywordsAndTimes(){
-        HashMap<String,Integer> map = getMaxKeyAndTimes();
+        HashMap<String,Integer> map = UtilRead.readLocalWordsObject();
         JSONArray jsonArray = new JSONArray();
+        int count = 0;
         for (String string : map.keySet()){
+            ++count;
+            if (count > 100) break;
             JSONObject obj = new JSONObject();
             obj.put("name",string);
             obj.put("size",map.get(string));
@@ -55,7 +59,10 @@ public class GetCommunity {
         HashMap<String,Integer> keywordstimesMap = new HashMap<>();
         ConnectAndOperNeo4j connect = new ConnectAndOperNeo4j();
         StatementResult result;
+        int count = 0;
         for (String string : list){
+            ++count;
+            if (count > 150) break;
 //            MATCH (n:newKeywordKey{name:"人工智能"}) RETURN n.name as name, n.times as times
             result = connect.excute("MATCH (n:newKeywordKey{name:\""+string+"\"}) RETURN n.name as name, n.times as times",
                     parameters( "", "" ));
@@ -71,9 +78,79 @@ public class GetCommunity {
                 }
             }
         }
-        System.out.println(keywordstimesMap);
+        System.out.println(keywordstimesMap.size());
         return keywordstimesMap;
     }
+
+
+
+    public HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> getLocalCommubityData(List<String> list){
+//        LinkedList<String> locao_words = new LinkedList<>();
+        HashMap<String,Integer> locao_words = new HashMap<>();
+        HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> community = new HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>>();
+        HashMap<Integer,HashMap<String,Integer>> sonCommunity = new HashMap<Integer,HashMap<String,Integer>>();
+        ConnectAndOperNeo4j connect = new ConnectAndOperNeo4j();
+        StatementResult result;
+
+        int bigIndex = 1;
+        int sonIndex = 1;
+        for (String string : list){
+            int count = 0;
+            int good = 0;
+            int bad = 0;
+            result = connect.excute("MATCH (p:newKeywordKey{name:\""+string+"\"})-[r:similarKey]-(n:newKeywordKey) " +
+                            "RETURN p.name as p_name,p.times as p_times,n.name as n_name,n.times as n_times,r.times as r_times limit 400",
+                    parameters( "", "" ));
+
+            HashMap<String,Integer> templist = new HashMap<>();
+            while ( result.hasNext() )
+            {
+                ++count;
+                Record record = result.next();
+                try {
+                    if (templist.get(string) == null){
+                        templist.put(record.get("p_name").asString(),Integer.parseInt(record.get("p_times").asString()));
+                    }
+                    int similar_times = Integer.parseInt(record.get("n_times").asString());
+//                    System.out.println("////////////////////////////////////////////");
+                    if (similar_times < 2) {
+                        ++bad;
+                        continue;
+                    }
+                    int name_times = Integer.parseInt(record.get("n_times").asString());
+//                    System.out.println(name_times);
+                    String name = record.get("n_name").asString();
+                    locao_words.put(name,name_times);
+                    templist.put(name,name_times);
+//                    templist.put(record.get("n_name").asString(),name_times);
+                    ++good;
+                }catch (Exception e){
+//                    e.printStackTrace();
+//                    ++bad;
+                    continue;
+                }
+            }
+//            if (flag && templist.size() > 1) {
+//                sonCommunity.put(sonIndex++,templist);
+//                break;
+//            }else {
+//                sonCommunity.put(sonIndex++,templist);
+//            }
+            sonCommunity.put(sonIndex++,templist);
+            System.out.println("query： "+string);
+            System.out.println("总数： "+count);
+            System.out.println("bad总数： "+bad);
+            System.out.println("good总数： "+good);
+
+        }
+
+        community.put(bigIndex,sonCommunity);
+        connect.closeConnect();
+        UtilWrite.WriteLocalWordsObject(locao_words);
+        return community;
+
+    }
+
 
 //    public String communityBasedQuery(String query){
 //        HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> community = new HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>>();
@@ -116,6 +193,7 @@ public class GetCommunity {
      */
 //    public HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> getCommubityData(List<String> list,boolean flag){
     public HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> getCommubityData(List<String> list){
+//        LinkedList<String> locao_words = new LinkedList<>();
         HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> community = new HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>>();
         HashMap<Integer,HashMap<String,Integer>> sonCommunity = new HashMap<Integer,HashMap<String,Integer>>();
         ConnectAndOperNeo4j connect = new ConnectAndOperNeo4j();
@@ -148,7 +226,10 @@ public class GetCommunity {
                     }
                     int name_times = Integer.parseInt(record.get("n_times").asString());
 //                    System.out.println(name_times);
-                    templist.put(record.get("n_name").asString(),name_times);
+                    String name = record.get("n_name").asString();
+//                    locao_words.add(name);
+                    templist.put(name,name_times);
+//                    templist.put(record.get("n_name").asString(),name_times);
                     ++good;
                 }catch (Exception e){
 //                    e.printStackTrace();
@@ -172,6 +253,7 @@ public class GetCommunity {
 
         community.put(bigIndex,sonCommunity);
         connect.closeConnect();
+//        UtilWrite.WriteLocalWordsObject(locao_words);
         return community;
 
     }

@@ -31,7 +31,7 @@ public class MainController {
 //        if(!customTaskDao.check(id))return "failed";
 
         //sgc
-        matchService.whenDataUpdate();
+//        matchService.whenDataUpdate();
         //getKeyphraseSevice.updateKeyphraseForPaper();
         //getKeyphraseSevice.updateKeyphraseForPatent();
         //getKeyphraseSevice.getKeyphraseForExpert();
@@ -39,6 +39,7 @@ public class MainController {
         //yxj
 //        doIndexService.creat_yangqiIndex();
 //        doIndexService.creat_paperIndex();
+//        doIndexService.creat_yangqipaperIndex();
 //        System.out.print("caocoaocaocoaocooaocoaoc");
         //xcy
         //dealDataService.dealNeo4j();

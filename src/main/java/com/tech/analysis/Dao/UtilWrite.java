@@ -446,4 +446,22 @@ public class UtilWrite {
             e.printStackTrace();
         }
     }
+
+    public static void WriteLocalWordsObject(HashMap<String,Integer>  locao_words) {
+//        String filePath = "D:/Entity/relationshipEntity.dat";
+//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
+//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
+//        String filePath = "F:/relationshipEntity.dat";
+//        String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipEntity.dat";
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"locao_wordsObject.dat";
+        try {
+            FileOutputStream outStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    outStream);
+            objectOutputStream.writeObject(locao_words);
+            objectOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

@@ -59,6 +59,25 @@ public class SearchController {
        return res.toString();
     }
 
+    @RequestMapping("/searchyangqipaper")
+    @ResponseBody
+    @CrossOrigin
+    public String get_yangqipaper_result(@RequestParam String paper,@RequestParam int year)
+    {
+
+        log.info("查询关键字"+paper);
+        log.info("查询开始年份"+year);
+        if(paper.equals("“”")||paper.equals(""))
+            return "请输入需要查询的关键字";
+        String[] paperKey=paper.split(" ");
+        JsonObject res=null;
+        if(paperKey.length>0)
+        {
+            res=SearchServices.searchyangqipaper(paperKey,year);
+        }
+        return res.toString();
+    }
+
     @GetMapping("/greeting")
     public String greetingForm() {
 

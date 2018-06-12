@@ -261,6 +261,104 @@ public class DoIndexService {
         }
         return  status;
     }
+
+    public  static String creat_yangqipaperIndex()
+    {
+        final String cfn = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+        final  String url = "jdbc:sqlserver://10.168.103.8:1433;DatabaseName=STIMSTEST";
+        String status="建立索引成功";
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet res = null;
+        System.out.println("读取数据库数据并索引"+res);
+        long start = System.currentTimeMillis();
+        int i=0;
+        String patentid="0";
+        String priceid="0";
+        String paperUID="";
+        patentid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt" ,patentid);
+        priceid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqipaper_index" );
+        try {
+            Class.forName(cfn);
+            con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
+            String sql = "select UID,keywords_cn  as name,pubyear from Paper where keywords_cn is not null and has_keywords='1' and UID in (select distinct uid from (SELECT id\n" +
+                    "  FROM EnterpriseInfo where enterprisetype = 0) a inner join Address b on a.id = b.companyid)\n" +
+                    "union\n" +
+                    "select code as UID,name,year as pubyear  from Prize where id>"+priceid+"and code in (select distinct prizecode from (SELECT id\n" +
+                    "  FROM EnterpriseInfo where enterprisetype = 0) a inner join Enterprise2Prize b on a.id = b.enterpriseid)\n" +
+                    "union \n" +
+                    "select patentnumber as UID,cast(keywords as nvarchar)as name,convert(varchar(4),success_date,120)as pubyear from Patent where id >"+patentid+"and id in (select distinct patentid from (SELECT id\n" +
+                    "  FROM EnterpriseInfo where enterprisetype = 0) a inner join Patent2Enterprise b on a.id = b.enterpriseid)";//查询test表
+            statement = con.prepareStatement(sql);
+            res = statement.executeQuery();
+            System.out.println(res);
+            Directory dir=FSDirectory.open(indexDir);
+            IndexWriterConfig  iwc = new IndexWriterConfig(Version.LUCENE_35, new IKAnalyzer());
+            IndexWriter writer=null;
+            try
+            {
+                writer = new IndexWriter(dir,iwc);
+            }catch (Exception e)
+            {
+                System.out.println("创建IndexWriter时发生错误!");
+            }
+            while(res.next()){
+                i=i+1;
+                System.out.println(i);
+                String title = res.getString("name");//获取test_name列的元素                                                                                                                                                    ;
+                System.out.println("文献关键字："+title);
+                Document doc= getpaperDocument(res);
+                writer.addDocument(doc);
+                System.out.println("索引创建完毕");
+                System.out.print(System.currentTimeMillis() - start);
+                System.out.println(" total milliseconds");
+            }
+            //更新paper表格，建立所以以后把10变成11
+            sql="update paper set has_keywords='11' where has_keywords='10'";
+            statement=con.prepareStatement(sql);
+            statement.executeUpdate();
+            //把Prize的id读入文件
+            sql="select max(id) as id from Prize";
+            statement = con.prepareStatement(sql);
+            res = statement.executeQuery();
+            while (res.next())
+            {
+                priceid = res.getString("id");//获取test_name列的元素
+                System.out.println(priceid);
+            }
+            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+            //把Patent的id读入文件
+            sql="select max(id) as id from Patent";
+            statement = con.prepareStatement(sql);
+            res = statement.executeQuery();
+            while (res.next())
+            {
+                patentid =res.getString("id");//获取test_name列的元素
+                System.out.println(patentid);
+            }
+            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);
+            System.out.println("索引创建完毕");
+            System.out.print((System.currentTimeMillis() - start)/1000);
+            System.out.println(" total milliseconds");
+            writer.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            System.out.println(e);
+            status="建立索引失败";
+        }finally{
+            try {
+                if(res != null) res.close();
+                if(statement != null) statement.close();
+                if(con != null) con.close();
+            } catch (Exception e2) {
+                // TODO: handle exception
+                e2.printStackTrace();
+            }
+        }
+        return  status;
+    }
     public static Document getDocument(ResultSet res)throws Exception {
         Document doc=new Document();
         try{
