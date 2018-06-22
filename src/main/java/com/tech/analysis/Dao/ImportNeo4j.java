@@ -151,6 +151,7 @@ public class ImportNeo4j {
             runConsoleOrder(deleteGraph_db);
             System.out.println("删除成功");
 //            runConsoleOrder(buildBaseNeo4j);
+
             myUnzip.unZipFiles(new File(neo4jdatabasepath+".zip"), neo4jdatabasepath+"/");
 
 //            myUnzip.unZipFiles(new File("/usr/neo4j3.1.0/data/databases/paperData1.zip"), "/usr/neo4j3.1.0/data/databases/");
