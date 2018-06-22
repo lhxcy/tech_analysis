@@ -22,6 +22,7 @@ http://10.168.103.68:8080//graph/getKeyAndTimes
 6：返回词云
 http://10.168.103.68:8080//graph/getWordcloud
 
+
 7：返回相似的词
 http://10.168.103.68:8080//model/analysisword?word=人工智能&number=5
 
