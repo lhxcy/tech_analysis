@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class UtilWrite {
     private static String basePath = System.getProperty("user.dir");
+//    private static String basePath = UtilWrite.class.getClassLoader().getResource("/").getPath();
     /**
      * 将HashMap<String, double[]> wordMap 写入文件
      * @param wordMap
@@ -429,12 +430,48 @@ public class UtilWrite {
         }
     }
 
-    public static void WriteRelationFile(HashMap<String, RelationshipEntity> hashmap) {
-//        String filePath = "D:/Entity/relationshipEntity.dat";
-//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
-//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
-//        String filePath = "F:/relationshipEntity.dat";
-//        String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipEntity.dat";
+
+    public static void WriteLocalWordsObject(HashMap<String,Integer>  locao_words) {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"local_wordsObject.dat";
+        try {
+            FileOutputStream outStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    outStream);
+            objectOutputStream.writeObject(locao_words);
+            objectOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void WriteAuthorFile(HashMap<String, AuthorEntity> hashmap) {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"authorEntity.dat";
+        try {
+            FileOutputStream outStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    outStream);
+            objectOutputStream.writeObject(hashmap);
+            objectOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public  static void WriteInstitutionFile(HashMap<String, InstitutionEntity> hashmap) {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"institutionEntity.dat";
+        try {
+            FileOutputStream outStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    outStream);
+            objectOutputStream.writeObject(hashmap);
+            objectOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public  static void WriteRelationFile(HashMap<String, RelationshipEntity> hashmap) {
         String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"relationshipEntity.dat";
         try {
             FileOutputStream outStream = new FileOutputStream(filePath);
@@ -447,18 +484,37 @@ public class UtilWrite {
         }
     }
 
-    public static void WriteLocalWordsObject(HashMap<String,Integer>  locao_words) {
+    public static void WriteCode2FatherCodeObject(HashMap<String,String> code2fathercode) {
 //        String filePath = "D:/Entity/relationshipEntity.dat";
 //        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
 //        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
 //        String filePath = "F:/relationshipEntity.dat";
 //        String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipEntity.dat";
-        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"locao_wordsObject.dat";
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"code2fathercodeForImportObect.dat";
         try {
             FileOutputStream outStream = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(
                     outStream);
-            objectOutputStream.writeObject(locao_words);
+            objectOutputStream.writeObject(code2fathercode);
+            objectOutputStream.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void WriteCode2NameObject(HashMap<String,String> code2name) {
+//        String filePath = "D:/Entity/relationshipEntity.dat";
+//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
+//        String filePath = "/home/zhzy/Documents/data/relationshipEntity.dat";
+//        String filePath = "F:/relationshipEntity.dat";
+//        String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipEntity.dat";
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"code2nameForImportObect.dat";
+        try {
+            FileOutputStream outStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    outStream);
+            objectOutputStream.writeObject(code2name);
             objectOutputStream.close();
         }catch(Exception e){
             e.printStackTrace();

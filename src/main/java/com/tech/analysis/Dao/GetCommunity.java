@@ -37,6 +37,65 @@ public class GetCommunity {
         }
     }
 
+    /**
+     * 返回词云
+     * @return
+     */
+    public String getJsonStringCiYun(){
+        List<String> list = UtilRead.readQuery();
+        JSONArray jsonArray = new JSONArray();
+        HashMap<String, Integer> ciyun = new HashMap<>();
+        ConnectAndOperNeo4j connect = new ConnectAndOperNeo4j();
+        StatementResult result;
+
+        int bigIndex = 1;
+        int sonIndex = 1;
+        int count = 0;
+        int good = 0;
+        int bad = 0;
+//        return formatJsonString(getLocalCommubityData(list));
+        for (String string : list){
+
+            result = connect.excute("MATCH (p:newKeywordKey{name:\""+string+"\"})-[r:similarKey]-(n:newKeywordKey) " +
+                            "RETURN p.name as p_name,p.times as p_times,n.name as n_name,n.times as n_times limit 100",
+                    parameters( "", "" ));
+
+            while ( result.hasNext() )
+            {
+                ++count;
+                Record record = result.next();
+                try {
+                    String Pname = record.get("p_name").asString();
+                    int Ptimes = Integer.parseInt(record.get("p_times").asString());
+                    String Nname = record.get("n_name").asString();
+                    int Ntimes = Integer.parseInt(record.get("n_times").asString());
+                    if (Ntimes < 2) {
+                        ++bad;
+                        continue;
+                    }
+                    if (!ciyun.containsKey(Pname)) ciyun.put(Pname,Ptimes);
+                    if (!ciyun.containsKey(Nname)) ciyun.put(Nname,Ntimes);
+                    ++good;
+                }catch (Exception e){
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+        }
+        System.out.println("总数： "+count);
+        System.out.println("bad总数： "+bad);
+        System.out.println("good总数： "+good);
+
+        for(String key : ciyun.keySet()){
+            JSONObject obj = new JSONObject();
+            obj.put("name",key);
+            obj.put("size",ciyun.get(key));
+            jsonArray.put(obj);
+        }
+
+        return jsonArray.toString();
+    }
+
     public String getJsonArrayForKeywordsAndTimes(){
         HashMap<String,Integer> map = UtilRead.readLocalWordsObject();
         JSONArray jsonArray = new JSONArray();

@@ -47,5 +47,9 @@ public class KeywordsController {
         return keywordsService.predictYear();
     }
 
+    @RequestMapping("/getWordcloud")
+    public String getCiyun(){
+        return keywordsService.getCiyun();
+    }
 
 }

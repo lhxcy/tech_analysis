@@ -1,6 +1,7 @@
 package com.tech.analysis.Dao;
 
 import com.tech.analysis.entity.QueryEntity;
+import com.tech.analysis.util.PropertyUtil;
 import org.neo4j.cypher.internal.frontend.v2_3.ast.functions.Str;
 import org.neo4j.driver.v1.*;
 //import org.python.core.Py;
@@ -27,12 +28,12 @@ public class test {
 //                    "E:\\tech_analysis\\py\\model\\Line_Prediction.py"};
 //            String[] parm = new String[] { "/usr/bin/python3",
 //                    "/home/zhzy/Downloads/xcy/tech_analysis/py/model/t.py"};
-            String[] deleteGraph_db = new String[] { "rm", "-rf",
-                    "/usr/neo4j3.1.0/data/databases/paperData1"};
-            String[] unzipGraph_db = new String[] { "unzip",
-                    "/home/zhzy/Downloads/xcy/temp/test.txt.zip"};
-            String[] keyImport = new String[] { "bash","/home/zhzy/Downloads/xcy/batch-import-tool/import.sh",
-                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/keywordsKey.csv", "/home/zhzy/Downloads/xcy/batch-import-tool/file/relationshipKey.csv"};
+//            String[] deleteGraph_db = new String[] { "rm", "-rf",
+//                    "/usr/neo4j3.1.0/data/databases/paperData1"};
+//            String[] unzipGraph_db = new String[] { "unzip",
+//                    "/home/zhzy/Downloads/xcy/temp/test.txt.zip"};
+//            String[] keyImport = new String[] { "bash","/home/zhzy/Downloads/xcy/batch-import-tool/import.sh",
+//                    "/home/zhzy/Downloads/xcy/batch-import-tool/file/keywordsKey.csv", "/home/zhzy/Downloads/xcy/batch-import-tool/file/relationshipKey.csv"};
 //            unzip /usr/neo4j3.1.0/data/databases/paperData1.zip
 //            String[] parm = new String[] { "/usr/neo4j3.1.0/bin/neo4j",
 //                    "start"};
@@ -68,6 +69,15 @@ public class test {
     }
 
     public static void main(String[] args) throws Exception{
+
+
+
+        //String basePath = System.getProperty("user.dir");
+        //System.out.println(basePath);
+//        String neo4jdatapath = PropertyUtil.getProperty("neo4jdatapath");
+//        System.out.println(neo4jdatapath);
+//        String basePath = System.getProperty("user.dir");
+//          System.out.println(basePath);
 //        HashMap<String, double[]> wordMap = UtilRead.readModel();
 
 //        String basePath = System.getProperty("user.dir");
@@ -141,16 +151,16 @@ public class test {
 
 //        String string = "卫星通信2011";
 //        System.out.println(string.substring(0,string.length()-4));
-        WordModel wordModel = new WordModel();
-        System.out.println(wordModel.wordMap.size());
-//        List<String> list = wordModel.distance("卫星通信");
-//        List<String> list = wordModel.distance("人工智能");
-//        List<String> list = wordModel.distance("机器学习");
-        List<String> list = wordModel.distance("量子计算");
-        if (list != null){
-            for (String string : list)
-                System.out.println(string);
-        }
+//        WordModel wordModel = new WordModel();
+//        System.out.println(wordModel.wordMap.size());
+////        List<String> list = wordModel.distance("卫星通信");
+////        List<String> list = wordModel.distance("人工智能");
+////        List<String> list = wordModel.distance("机器学习");
+//        List<String> list = wordModel.distance("量子计算");
+//        if (list != null){
+//            for (String string : list)
+//                System.out.println(string);
+//        }
 //        LoadWordAndVector loadWordAndVector = new LoadWordAndVector();
 //        loadWordAndVector.buildModel();
 //        System.out.println("start");

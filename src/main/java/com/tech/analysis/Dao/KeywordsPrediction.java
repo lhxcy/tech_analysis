@@ -19,7 +19,8 @@ import static org.neo4j.driver.v1.Values.parameters;
 public class KeywordsPrediction {
 
     private String basePath = System.getProperty("user.dir");
-    //        String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
+//    private String basePath = KeywordsPrediction.class.getClassLoader().getResource("/").getPath();
+
 //    private static HashMap<String, Long> keywordTimes = UtilRead.readKeywordTimes();
 //    private static HashMap<String, Long> yearKeywordTimes = UtilRead.readYearKeywordTimes();
 //    private static HashMap<String, KeywordEntity> keywords = UtilRead.readKeywords();

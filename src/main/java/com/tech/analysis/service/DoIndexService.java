@@ -17,9 +17,12 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.util.Version;
 import org.springframework.stereotype.Service;
 import org.wltea.analyzer.lucene.IKAnalyzer;
+///home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/IKAnalyzer3.2.5Stable.jar
 
 @Service
 public class DoIndexService {
+//    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
+    private static String basePath = System.getProperty("user.dir");
     public  static String creatIndex()
     {
         final String cfn = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -31,7 +34,8 @@ public class DoIndexService {
         System.out.println("读取数据库数据并索引"+res);
         long start = System.currentTimeMillis();
         int i=0;
-        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"expert_index" );
+//        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"expert_index" );
+        File indexDir =   new  File( basePath+System.getProperty("file.separator")+"expert_index" );
 //            File file = new File(delpath);
         try {
             Class.forName(cfn);
@@ -105,8 +109,10 @@ public class DoIndexService {
         long start = System.currentTimeMillis();
         int i=0;
         String Enterid="0";
-        Enterid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt" ,Enterid);
-        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index" );
+//        Enterid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt" ,Enterid);
+        Enterid=getId(basePath+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt" ,Enterid);
+//        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index" );
+        File indexDir =   new  File( basePath+System.getProperty("file.separator")+"yangqi_index" );
         try {
             Class.forName(cfn);
             con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
@@ -147,7 +153,8 @@ public class DoIndexService {
                 Enterid = res.getString("id");//获取test_name列的元素
                 System.out.println(Enterid);
             }
-            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt",Enterid);
+//            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt",Enterid);
+            setId(basePath+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt",Enterid);
             writer.close();
         } catch (Exception e) {
             // TODO: handle exception
@@ -181,9 +188,12 @@ public class DoIndexService {
         String patentid="0";
         String priceid="0";
         String paperUID="";
-        patentid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/patent.txt" ,patentid);
-        priceid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/price.txt",priceid);
-        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"paper_index" );
+//        patentid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/patent.txt" ,patentid);
+//        priceid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/price.txt",priceid);
+//        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"paper_index" );
+        patentid=getId(basePath+System.getProperty("file.separator")+"flag/patent.txt" ,patentid);
+        priceid=getId(basePath+System.getProperty("file.separator")+"flag/price.txt",priceid);
+        File indexDir =   new  File( basePath+System.getProperty("file.separator")+"paper_index" );
         try {
             Class.forName(cfn);
             con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
@@ -229,7 +239,8 @@ public class DoIndexService {
                 priceid = res.getString("id");//获取test_name列的元素
                 System.out.println(priceid);
             }
-            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/price.txt",priceid);
+//            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/price.txt",priceid);
+            setId(basePath+System.getProperty("file.separator")+"flag/price.txt",priceid);
             //把Patent的id读入文件
             sql="select max(id) as id from Patent";
             statement = con.prepareStatement(sql);
@@ -239,7 +250,8 @@ public class DoIndexService {
                 patentid =res.getString("id");//获取test_name列的元素
                 System.out.println(patentid);
             }
-            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/patent.txt",patentid);
+//            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/patent.txt",patentid);
+            setId(basePath+System.getProperty("file.separator")+"flag/patent.txt",patentid);
             System.out.println("索引创建完毕");
             System.out.print((System.currentTimeMillis() - start)/1000);
             System.out.println(" total milliseconds");
@@ -276,9 +288,12 @@ public class DoIndexService {
         String patentid="0";
         String priceid="0";
         String paperUID="";
-        patentid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt" ,patentid);
-        priceid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
-        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqipaper_index" );
+//        patentid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt" ,patentid);
+//        priceid=getId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+//        File indexDir =   new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqipaper_index" );
+        patentid=getId(basePath+System.getProperty("file.separator")+"flag/yangqipatent.txt" ,patentid);
+        priceid=getId(basePath+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+        File indexDir =   new  File( basePath+System.getProperty("file.separator")+"yangqipaper_index" );
         try {
             Class.forName(cfn);
             con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
@@ -327,7 +342,8 @@ public class DoIndexService {
                 priceid = res.getString("id");//获取test_name列的元素
                 System.out.println(priceid);
             }
-            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+//            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
+            setId(basePath+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
             //把Patent的id读入文件
             sql="select max(id) as id from Patent";
             statement = con.prepareStatement(sql);
@@ -337,7 +353,8 @@ public class DoIndexService {
                 patentid =res.getString("id");//获取test_name列的元素
                 System.out.println(patentid);
             }
-            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);
+//            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);
+            setId(basePath+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);
             System.out.println("索引创建完毕");
             System.out.print((System.currentTimeMillis() - start)/1000);
             System.out.println(" total milliseconds");
@@ -411,7 +428,8 @@ public class DoIndexService {
     public static String deleteIndex()
     {
         try {
-            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"expert_index";
+//            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"expert_index";
+            String delpath=basePath+System.getProperty("file.separator")+"expert_index";
 //            File file = new File(delpath);
             File file = new File(delpath);
             // 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true
@@ -437,7 +455,8 @@ public class DoIndexService {
     public static String deleteyangqiIndex()
     {
         try {
-            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index";
+//            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index";
+            String delpath=basePath+System.getProperty("file.separator")+"yangqi_index";
 //            File file = new File(delpath);
             File file = new File(delpath);
             // 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true
@@ -463,7 +482,8 @@ public class DoIndexService {
     public static String deletepaperIndex()
     {
         try {
-            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index";
+//            String delpath=System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index";
+            String delpath=basePath+System.getProperty("file.separator")+"yangqi_index";
 //            File file = new File(delpath);
             File file = new File(delpath);
             // 当且仅当此抽象路径名表示的文件存在且 是一个目录时，返回 true

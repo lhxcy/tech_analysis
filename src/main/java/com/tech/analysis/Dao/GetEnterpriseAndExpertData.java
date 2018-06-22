@@ -16,75 +16,59 @@ import java.util.List;
 
 /**
  * Created by XCY on 2018/5/23.
+ * 从sql中得到专家、企业的信息
  */
 @Repository
 public class GetEnterpriseAndExpertData {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private String basePath = System.getProperty("user.dir");
-    //        String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
+//    private String basePath = GetEnterpriseAndExpertData.class.getClassLoader().getResource("/").getPath();
     public void getAllData(){
         //得到一片论文所属专家的对象
 //        getSQLExpertData();
         //得到论文所属机构的对象
 //        getPaperInstitutionFormSql();
         //得到专家和企业的对应关系对象
-        getSQLExpertAndEnterpriseData();
-
-
-////        HashMap<String,LinkedList<String>> institutionData = getPaperInstitutionFormSql();
-////        getName2EnterpriseForGenerateHashTable();
-//        HashMap<String,LinkedList<String>> expertCooperate = getSQLExpertData();
-//        HashMap<String,LinkedList<String>> enterpriseAndExpert = getSQLExpertAndEnterpriseData();
-////        HashMap<String,LinkedList<String>> expertCooperate = UtilRead.readExpertCooperateObject();
-//        int count = 0;
-//        for (String string : expertCooperate.keySet())
-//            if (expertCooperate.get(string).size() >1){
-//                ++count;
-//                System.out.println(string+": "+"size: "+expertCooperate.get(string).size()+" "+expertCooperate.get(string));
-//            }
-//        System.out.println("count: "+count);
-//        System.out.println("count: "+expertCooperate.size());
-////        HashMap<String,LinkedList<String>> enterpriseAndExpert = UtilRead.readEnterpriseAndExpertObject();
-//        count = 0;
-//        for (String string : enterpriseAndExpert.keySet()){
-//            if (enterpriseAndExpert.get(string).size() > 1){
-//                ++count;
-//                System.out.println(string+": "+"size: "+enterpriseAndExpert.get(string).size()+" "+enterpriseAndExpert.get(string));
-//            }
-//        }
-//        System.out.println("count: "+count);
-//        System.out.println(enterpriseAndExpert.size());
-        //专家合作关系
-//        HashMap<String,LinkedList<String>> expertCooperate = getSQLExpertData();
-//        //专家所属机构和专家同事
-//        HashMap<String,LinkedList<String>> enterpriseAndExpert = getSQLExpertAndEnterpriseData();
-//        UtilWrite.WriteExpertCooperateObject(expertCooperate);
-//        UtilWrite.WriteEnterpriseAndExpertObject(enterpriseAndExpert);
+//        getSQLExpertAndEnterpriseData();
+        //得到机构和上级机构数据
+        getInstitutionAndSuper();
     }
 
-//    public void getName2EnterpriseForGenerateHashTable(){
-//        HashMap<String,LinkedList<String>> expertCooperate = getSQLExpertData();
-//        HashMap<String,LinkedList<String>> enterpriseAndExpert = getSQLExpertAndEnterpriseData();
-//        HashMap<String, AuthorEntity> authorEntityHashMap = new HashMap<>();
-//        HashMap<String,String> name2Enterprise = new HashMap<>();
-//        for (String enterpriseName : enterpriseAndExpert.keySet()){
-//            for (String expertName : enterpriseAndExpert.get(enterpriseName)){
-//                if (!name2Enterprise.containsKey(expertName)){
-////                    AuthorEntity authorEntity = new AuthorEntity(expertName,enterpriseName);
-//                    name2Enterprise.put(expertName,enterpriseName);
-//                }
-//            }
-//        }
-//        for (String name : name2Enterprise.keySet())
-//            System.out.println(name+","+name2Enterprise.get(name));
-//        System.out.println(name2Enterprise.size());
-////        for (String uid : expertCooperate.keySet()){
-////            for (String name : expertCooperate.get(uid)){
-////
-////            }
-////        }
-//    }
+    /**
+     * 得到机构和其上级机构
+     */
+    public void getInstitutionAndSuper(){
+        HashMap<String,String> code2fathercode = new HashMap<>();
+        HashMap<String,String> code2name = new HashMap<>();
+        System.out.println("start get enterpriseinfo data from sql");
+        String sql ="select name,code,fathercode from enterpriseinfo";
+        List<String> sqlDataList = jdbcTemplate.query(sql, new RowMapper<String>(){
+            @Override
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String name =  rs.getString("name");
+                String code =  rs.getString("code");
+                String fathercode =  rs.getString("fathercode");
+                if (name == null || "".equals(name)||code == null||fathercode==null)
+                    return "";
+                System.out.println(name.trim()+","+code.trim()+","+fathercode.trim());
+                return name.trim()+","+code.trim()+","+fathercode.trim();
+            }
+        });
+        for (String string : sqlDataList){
+            if (string == null || "".equals(string)) continue;
+            String[] stringSplit = string.split(",");
+            if (stringSplit.length < 3) continue;
+            code2fathercode.put(stringSplit[1],stringSplit[2]);
+            code2name.put(stringSplit[1],stringSplit[0]);
+        }
+
+//        UtilWrite.WriteCode2FatherCodeObject(code2fathercode);
+//        UtilWrite.WriteCode2NameObject(code2name);
+        writeCodeAndName(code2fathercode,basePath+File.separator+"py"+File.separator+"model","code2fathercodeForImport");
+        writeCodeAndName(code2name,basePath+File.separator+"py"+File.separator+"model","code2nameForImport");
+    }
+
 
 
     /**
@@ -108,7 +92,7 @@ public class GetEnterpriseAndExpertData {
 //                if (institutionName == null || "".equals(institutionName) ||
 //                        institutionName.contains("C") || institutionName.contains("T"))
                     return "";
-                System.out.println(uid+","+companyid+","+institutionName);
+//                System.out.println(uid+","+companyid+","+institutionName);
                 return (uid.trim()+","+companyid.trim()+","+institutionName.trim()).replace("\n"," ");
             }
         });
@@ -133,8 +117,8 @@ public class GetEnterpriseAndExpertData {
         //去除companyid
         int count = 0;
         for (String uid : tempInstitutionData.keySet()){
-            System.out.println(++count);
-            if (institutionData.size() > 200000) break;
+//            System.out.println(++count);
+//            if (institutionData.size() > 200000) break;
             if (!institutionData.containsKey(uid)){
                 HashMap<String,String> tempMap = tempInstitutionData.get(uid);
                 LinkedList<String> tempList = new LinkedList<>();
@@ -184,7 +168,7 @@ public class GetEnterpriseAndExpertData {
 //                name = name.replaceAll("[a-zA-Z]","" );
                 if (name == null || "".equals(name))
                     return "";
-                System.out.println(uid+","+name);
+//                System.out.println(uid+","+name);
                 return uid.trim()+","+name.trim();
             }
         });
@@ -193,8 +177,8 @@ public class GetEnterpriseAndExpertData {
         for (String string : sqlDataList){
             String[] stringSplit = string.split(",");
             if (stringSplit.length < 2) continue;
-            System.out.println(++count);
-            if (expertData.size() > 200000) break;
+//            System.out.println(++count);
+//            if (expertData.size() > 200000) break;
             if (expertData.get(stringSplit[0]) == null){
                 LinkedList<String> tempList = new LinkedList<>();
                 tempList.add(stringSplit[1]);
@@ -243,7 +227,7 @@ public class GetEnterpriseAndExpertData {
 
         HashMap<String,LinkedList<String>> enterpriseAndExpert = new HashMap<>();
         for (String expertid : experid2enterpriseid.keySet()){
-            if (enterpriseAndExpert.size() > 200000) break;
+//            if (enterpriseAndExpert.size() > 200000) break;
             String enterpriseid = experid2enterpriseid.get(expertid);
             String enterpriseName = id2enterprise.get(enterpriseid);
             if (enterpriseAndExpert.get(enterpriseName) == null){
@@ -313,7 +297,7 @@ public class GetEnterpriseAndExpertData {
                 String name =  rs.getString(second);
                 if (id == null || name == null)
                     return "";
-                System.out.println(id+","+name);
+//                System.out.println(id+","+name);
                 return id.trim()+","+name.trim();
             }
         });
@@ -322,7 +306,7 @@ public class GetEnterpriseAndExpertData {
         int count = 0;
         for (String string : sqlDataList){
             if (string == null || "".equals(string)) continue;
-            System.out.println(++count);
+//            System.out.println(++count);
 //            if (map.size() > 200000) break;
             String[] stringSplit = string.split(",");
             map.put(stringSplit[0],stringSplit[1]);
@@ -548,5 +532,51 @@ public class GetEnterpriseAndExpertData {
         System.out.println(countline);
         // 返回是否成功的标记
         return flag;
+    }
+
+    public boolean writeCodeAndName(HashMap<String,String> codeandname,String filePath, String fileName){
+        // 标记文件生成是否成功
+        boolean flag = true;
+
+        //文件总行数
+        long countline = 0;
+
+        // 拼接文件完整路径
+        String fullPath = filePath + File.separator + fileName + ".csv";
+
+        // 生成csv格式文件
+        try {
+            // 保证创建一个新文件
+            File file = new File(fullPath);
+            if (!file.getParentFile().exists()) { // 如果父目录不存在，创建父目录
+                file.getParentFile().mkdirs();
+            }
+            if (file.exists()) { // 如果已存在,删除旧文件
+                file.delete();
+            }
+            file.createNewFile();
+
+
+            // 将格式化后的字符串写入文件
+            Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            for (String tempcodeandname : codeandname.keySet()){
+                String temp = tempcodeandname;
+                    temp += ","+ codeandname.get(tempcodeandname);
+                write.write(temp);
+                write.write('\n');
+                ++countline;
+            }
+            write.flush();
+            write.close();
+            System.out.println("机构和机构上级数据CSV写入成功！");
+        } catch (IOException e) {
+            flag = false;
+            System.out.println("机构和机构上级数据CSV写入失败 !");
+            e.printStackTrace();
+        }
+        System.out.println(countline);
+        // 返回是否成功的标记
+        return flag;
+
     }
 }

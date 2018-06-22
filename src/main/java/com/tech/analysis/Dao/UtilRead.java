@@ -4,6 +4,8 @@ import com.tech.analysis.entity.AuthorEntity;
 import com.tech.analysis.entity.InstitutionEntity;
 import com.tech.analysis.entity.KeywordEntity;
 import com.tech.analysis.entity.RelationshipEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,8 +16,18 @@ import java.util.List;
 /**
  * Created by XCY on 2018/4/18.
  */
+@Component
 public class UtilRead {
+//    private static String basePath = UtilRead.class.getClassLoader().getResource("/").getPath();
     private static String basePath = System.getProperty("user.dir");
+//    private static String basePath = "abc";
+//    UtilRead(){
+//        try {
+//            basePath = ResourceUtils.getURL("classpath:").getPath();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
     /**
      * 读出模型
      * @return
@@ -29,6 +41,7 @@ public class UtilRead {
 //            String filePath = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/model520286.dat";
 //            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"model.dat";
             String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"model_more.dat";
+            System.err.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"+filePath);
             freader = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(freader);
 //            HashMap<String, double[]> wordMap = new HashMap<String, double[]>();
@@ -439,17 +452,169 @@ public class UtilRead {
         FileInputStream freader;
         HashMap<String,Integer>  locao_words = new HashMap<String,Integer> ();
         try {
-//            String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipsNeo4jObject.dat";
-//        String filePath = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/relationshipsNeo4jObject.dat";
-            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"locao_wordsObject.dat";
+            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"local_wordsObject.dat";
             freader = new FileInputStream(filePath);
             ObjectInputStream objectInputStream = new ObjectInputStream(freader);
             locao_words = (HashMap<String,Integer> )objectInputStream.readObject();
-            System.out.println("载入locao_words对象成功！");
+            System.out.println("载入local_words对象成功！");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("载入locao_words对象失败！");
+            System.out.println("载入local_words对象失败！");
         }
         return locao_words;
+    }
+
+    /**
+     * 读取expertData对象
+     * 键为论文uid，值为写该论文的作者
+     * @return
+     */
+    public static HashMap<String,LinkedList<String>> readExpertData() {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"expertCooperateForImport.csv";
+        HashMap<String,LinkedList<String>> expertData = new HashMap<>();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while (true) {
+                line = bufferedReader.readLine();
+                if (line == null || line.trim().equals("")) break;
+                String[] stringSplit = line.split(",");
+                LinkedList<String> tempList = new LinkedList<>();
+                for (int i = 1; i < stringSplit.length; ++i){
+                    if ("".equals(stringSplit[i].trim())) continue;
+                    tempList.add(stringSplit[i].trim());
+                }
+                expertData.put(stringSplit[0],tempList);
+            }
+            System.out.println("读取expertData对象成功");
+        }catch (Exception e){
+            System.out.println("读取expertData对象失败");
+        }
+        return expertData;
+    }
+
+
+    /**
+     * 读取enterpriseAndExpert对象
+     * 键为机构名字， 值为属于该机构的专家的名字列表
+     * @return
+     */
+    public static HashMap<String,LinkedList<String>> readEnterpriseAndExpert() {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"enterpriseAndExpertForImport.csv";
+        HashMap<String,LinkedList<String>> enterpriseAndExpert = new HashMap<>();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while (true) {
+                line = bufferedReader.readLine();
+                if (line == null || line.trim().equals("")) break;
+                String[] stringSplit = line.split(",");
+                LinkedList<String> tempList = new LinkedList<>();
+                for (int i = 1; i < stringSplit.length; ++i){
+                    if ("".equals(stringSplit[i].trim())) continue;
+                    tempList.add(stringSplit[i].trim());
+                }
+                enterpriseAndExpert.put(stringSplit[0],tempList);
+            }
+            System.out.println("读取enterpriseAndExpert对象成功");
+        }catch (Exception e){
+            System.out.println("读取enterpriseAndExpert对象失败");
+        }
+        return enterpriseAndExpert;
+    }
+
+    /**
+     * 读取name2Enterprise对象
+     * 键为专家，值为专家所属机构
+     * @return
+     */
+    public static HashMap<String,String> readName2Enterprise() {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"name2EnterpriseForImport.csv";
+        HashMap<String,String> name2Enterprise = new HashMap<>();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while (true) {
+                line = bufferedReader.readLine();
+                if (line == null || line.trim().equals("")) break;
+                String[] stringSplit = line.split(",");
+                if ("".equals(stringSplit[1].trim())) continue;
+                name2Enterprise.put(stringSplit[0],stringSplit[1]);
+            }
+            System.out.println("读取name2Enterprise对象成功");
+        }catch (Exception e){
+            System.out.println("读取name2Enterprise对象失败");
+        }
+        return name2Enterprise;
+    }
+
+    /**
+     * 读取institutionData对象
+     * 键为论文uid，值为发表该论文的机构
+     * @return
+     */
+    public static HashMap<String,LinkedList<String>> readPaperInstitution() {
+        String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"paperInstitutionForImport.csv";
+        HashMap<String,LinkedList<String>> institutionData = new HashMap<>();
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(filePath));
+            String line = "";
+            while (true) {
+                line = bufferedReader.readLine();
+                if (line == null || line.trim().equals("")) break;
+                String[] stringSplit = line.split(",");
+                LinkedList<String> tempList = new LinkedList<>();
+                for (int i = 1; i < stringSplit.length; ++i){
+                    if ("".equals(stringSplit[i].trim())) continue;
+                    tempList.add(stringSplit[i].trim());
+                }
+                institutionData.put(stringSplit[0],tempList);
+            }
+            System.out.println("读取institutionData对象成功");
+        }catch (Exception e){
+            System.out.println("读取institutionData对象失败");
+        }
+        return institutionData;
+    }
+
+    public static HashMap<String, String> readCode2FatherCodeObject(){
+        FileInputStream freader;
+        HashMap<String,String> code2fathercode = new HashMap<>();
+        try {
+//            String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipsNeo4jObject.dat";
+//        String filePath = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/relationshipsNeo4jObject.dat";
+            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"code2fathercodeForImportObect.dat";
+            freader = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(freader);
+            code2fathercode = (HashMap<String, String>)objectInputStream.readObject();
+            System.out.println("载入code2fathercode对象成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("载入code2fathercode对象失败！");
+        }
+        return code2fathercode;
+    }
+
+
+    public static HashMap<String, String> readCode2NameObject(){
+        FileInputStream freader;
+        HashMap<String,String> code2name = new HashMap<>();
+        try {
+//            String filePath = "E:\\tech_analysis_my\\tech_analysis\\py\\model\\relationshipsNeo4jObject.dat";
+//        String filePath = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/relationshipsNeo4jObject.dat";
+            String filePath = basePath+File.separator+"py"+File.separator+"model"+File.separator+"code2nameForImportObect.dat";
+            freader = new FileInputStream(filePath);
+            ObjectInputStream objectInputStream = new ObjectInputStream(freader);
+            code2name = (HashMap<String, String>)objectInputStream.readObject();
+            System.out.println("载入code2fathercode对象成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("载入code2fathercode对象失败！");
+        }
+        return code2name;
     }
 }

@@ -25,6 +25,11 @@ public class CustomTaskDao {
         jdbcTemplate.update(sql);
     }
 
+    public void updateAfterSgc(String id){
+        String sql = String.format("update customtask set status_deal_data = 1 where id = '%s'",id);
+        jdbcTemplate.update(sql);
+    }
+
     public Boolean check(String id){
         String sql = String.format("select status_spider,status_import_data from customtask where id = '%s'",id);
         List<String> list = jdbcTemplate.query(sql, new RowMapper<String>() {

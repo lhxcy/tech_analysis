@@ -26,6 +26,8 @@ public class DealDataService {
     private ImportNeo4j importNeo4j;
     @Autowired
     private GetEnterpriseAndExpertData getEnterpriseAndExpertData;
+//    @Autowired
+//    private BuildInitNeo4j buildInitNeo4j;
 
 
     /**
@@ -68,7 +70,18 @@ public class DealDataService {
     /**
      * 得到构建neo4j的基础数据
      */
-    public void getNeo4jBaseData(){
-        getEnterpriseAndExpertData.getAllData();
-    }
+//    public void getNeo4jDataBase(){
+//        generateCSV.buildKeyAndRelationCSV();
+//        System.out.println("得到csv数据");
+//        getEnterpriseAndExpertData.getAllData();
+//        System.out.println("从sql数据库取出数据");
+//        importNeo4j.batch_import();
+//        System.out.println("数据库构建成功！");
+////        buildInitNeo4j.buildInitNeo4j();
+//    }
+
+//    public void build(){
+//        buildInitNeo4j.buildInitNeo4j();
+//    }
+
 }

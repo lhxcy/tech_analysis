@@ -45,4 +45,12 @@ public class KeywordsService {
     public String predictYear(){
         return keywordsPrediction.getPredictionKeyword();
     }
+
+    /**
+     * 返回词云
+     * @return
+     */
+    public String getCiyun(){
+        return getCommunity.getJsonStringCiYun();
+    }
 }

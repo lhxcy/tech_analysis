@@ -30,77 +30,152 @@ public class GenerateHashTable {
 
         return keywords;
     }
-    public void generate(String file) {
-        try {
-            HashMap<String,Long> keywordTimes = new HashMap<String, Long>();
-            HashMap<String, KeywordEntity> keywords = new HashMap<String, KeywordEntity>();
-            HashMap<String, RelationshipEntity> relationships = new HashMap<String, RelationshipEntity>();
-            long nodeId = 0l;
-            long relationshipId = 0l;
-//            in = utilRead.getBufferedReaderForJson(file);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String line = "";
-            while (true) {
-                line = bufferedReader.readLine();
-                if (line == null || line.trim().equals("")) {
-                    break;
+
+    public void general_Author_institutionObject(){
+        //载入数据库数据
+        //论文的合著专家
+        HashMap<String,LinkedList<String>> expertCooperate = UtilRead.readExpertData();
+        //企业下对应的专家
+        HashMap<String,LinkedList<String>> enterpriseAndExpert = UtilRead.readEnterpriseAndExpert();
+        //专家和所属企业
+        HashMap<String,String> name2Enterprise = UtilRead.readName2Enterprise();
+        //论文的合作机构
+        HashMap<String,LinkedList<String>> paperInstitution = UtilRead.readPaperInstitution();
+        System.out.println("expertCooperate size: "+expertCooperate.size());
+        System.out.println("enterpriseAndExpert size: "+enterpriseAndExpert.size());
+        System.out.println("name2Enterprise size: "+name2Enterprise.size());
+        System.out.println("paperInstitution size: "+paperInstitution.size());
+
+        //存储Authors
+        HashMap<String, AuthorEntity> authors = new HashMap<String, AuthorEntity>();
+
+        //机构
+        HashMap<String, InstitutionEntity> institutions = new HashMap<String, InstitutionEntity>();
+
+        //关系
+        HashMap<String, RelationshipEntity> relationships = new HashMap<String, RelationshipEntity>();
+        long nodeId = 0l;
+        long relationshipId = 0l;
+        /*构建作者关系*/
+        for (String uid : expertCooperate.keySet()){
+            //存储要建立关系的author实体Id
+            List<Long> authorIdList = new ArrayList<Long>();
+            for (String authorName : expertCooperate.get(uid)){
+                String authorInstitution = name2Enterprise.get(authorName);
+                if ("".equals(authorInstitution) || authorInstitution == null)
+                    authorInstitution = "null";
+                if (!authors.containsKey(authorName)){
+                    AuthorEntity authorEntity = new AuthorEntity(authorName,authorInstitution,nodeId);
+                    authorIdList.add(nodeId);
+                    ++nodeId;
+                    authors.put(authorName,authorEntity);
+                }else {
+                    authorIdList.add(authors.get(authorName).getId());
                 }
-
-//                获取keyword实体
-                List<String> getKeywords = getKeyWords(line);
-//                List<String> getKeywords = convertToNode.getKeyWords(objectLine);
-                List<Long> keywordIdList = new ArrayList<Long>();
-                for(String keyword: getKeywords) {
-                    if (!keywordTimes.containsKey(keyword)){
-                        keywordTimes.put(keyword,1l);
-                    }else {
-                        keywordTimes.put(keyword,keywordTimes.get(keyword)+1);
-                    }
-                    Long keywordId;
-                    if (!keywords.containsKey(keyword)) {
-                        KeywordEntity keywordEntity =
-                                new KeywordEntity(keyword, nodeId);
-                        keywordId = nodeId;
-                        keywords.put(keyword, keywordEntity);
-                        nodeId++;
-                    } else {
-                        keywordId = keywords.get(keyword).getId();
-                    }
-                    keywordIdList.add(keywordId);
-                }
-
-
-                //建立关键词之间的关系
-                for (int i = 0; i < keywordIdList.size(); i++) {
-                    Long keywordId1 = keywordIdList.get(i);
-                    for (int j = i + 1; j < keywordIdList.size(); j++) {
-                        Long keywordId2 = keywordIdList.get(j);
-                        String keywordRelationshipHashKey1 = keywordId1.toString() + "_" + keywordId2.toString();
-                        String keywordRelationshipHashKey2 = keywordId2.toString() + "_" + keywordId1.toString();
-                        if (!relationships.containsKey(keywordRelationshipHashKey1) && !keywords.containsKey(keywordRelationshipHashKey2)) {
-                            RelationshipEntity relationshipEntity =
-                                    new RelationshipEntity(keywordId1, keywordId2, 1l, RelationshipTypes.similar);
-                            relationships.put(keywordRelationshipHashKey1, relationshipEntity);
-                            relationshipId++;
-                        } else if (relationships.containsKey(keywordRelationshipHashKey1)) {
-                            relationships.get(keywordRelationshipHashKey1).setTimes(relationships.get(keywordRelationshipHashKey1).getTimes() + 1l);
-                        } else if (relationships.containsKey(keywordRelationshipHashKey2)) {
-                            relationships.get(keywordRelationshipHashKey2).setTimes(relationships.get(keywordRelationshipHashKey2).getTimes() + 1l);
-                        }
+            }
+            //建立作者合作关系，权重为合作次数
+            for (int i = 0; i < authorIdList.size(); ++i){
+                Long authorId1 = authorIdList.get(i);
+                for (int j = i+1; j < authorIdList.size(); ++j){
+                    Long authorId2 = authorIdList.get(j);
+                    String relationshipHashKey1 = authorId1.toString()+"_"+authorId2.toString();
+                    String relationshipHashKey2 = authorId2.toString()+"_"+authorId1.toString();
+                    if (!relationships.containsKey(relationshipHashKey1) && !relationships.containsKey(relationshipHashKey2)){
+                        RelationshipEntity relationshipEntity = new RelationshipEntity(authorId1,authorId2,1L,RelationshipTypes.Cooperate_Author);
+                        relationships.put(relationshipHashKey1,relationshipEntity);
+                    }else if (relationships.containsKey(relationshipHashKey1)){
+                        relationships.get(relationshipHashKey1).setTimes(relationships.get(relationshipHashKey1).getTimes()+1L);
+                    }else if (relationships.containsKey(relationshipHashKey2)){
+                        relationships.get(relationshipHashKey2).setTimes(relationships.get(relationshipHashKey2).getTimes()+1L);
                     }
                 }
             }
-            System.out.println("keywordTime size : " + keywordTimes.size());
-            System.out.println("keywords size : " + keywords.size());
-            System.out.println("relationships size : " + relationships.size());
-            //写入文件中
-            UtilWrite.WriteKeywordFile(keywords);
-            UtilWrite.WriteRelationFile(relationships);
-//            UtilWrite.WriteKeywordTimesFile(keywordTimes);
-        }catch (IOException e) {
-            e.printStackTrace();
         }
+        /*构建机构关系*/
+        for (String uid : paperInstitution.keySet()){
+            //存储要建立关系的institution实体Id
+            List<Long> institutionIdList = new ArrayList<Long>();
+            //往institution表中添加元素
+            for (String institutionOfThisPaper : paperInstitution.get(uid)){
+                if (!institutions.containsKey(institutionOfThisPaper)){
+                    InstitutionEntity institutionEntity = new InstitutionEntity(institutionOfThisPaper,"null",nodeId);
+                    institutionIdList.add(nodeId);
+                    ++nodeId;
+                    institutions.put(institutionOfThisPaper,institutionEntity);
+                }else {
+                    institutionIdList.add(institutions.get(institutionOfThisPaper).getId());
+                }
+            }
+
+            //建立institutions之间的关系 权重为合作次数
+            for (int i = 0; i < institutionIdList.size(); ++i){
+                Long institutionId1 = institutionIdList.get(i);
+                for (int j = i + 1; j < institutionIdList.size(); j++) {
+                    Long institutionId2 = institutionIdList.get(j);
+                    String relationshipHashKey1 = institutionId1.toString() + "_" + institutionId2.toString();
+                    String relationshipHashKey2 = institutionId2.toString() + "_" + institutionId1.toString();
+                    if (!relationships.containsKey(relationshipHashKey1) && !relationships.containsKey(relationshipHashKey2)){
+                        RelationshipEntity relationshipEntity = new RelationshipEntity(institutionId1,institutionId2,1L,RelationshipTypes.Cooperate_Institution);
+                        relationships.put(relationshipHashKey1,relationshipEntity);
+                    }else if (relationships.containsKey(relationshipHashKey1)){
+                        relationships.get(relationshipHashKey1).setTimes(relationships.get(relationshipHashKey1).getTimes()+1L);
+                    }else if (relationships.containsKey(relationshipHashKey2)){
+                        relationships.get(relationshipHashKey2).setTimes(relationships.get(relationshipHashKey2).getTimes()+1L);
+                    }
+                }
+            }
+        }
+
+        /*构建作者和机构的关系*/
+        for (String institutionName : enterpriseAndExpert.keySet()){
+            for (String authorName : enterpriseAndExpert.get(institutionName)){
+                String hashKey = institutionName+authorName;
+                if (!relationships.containsKey(hashKey)){
+                    if (institutions.containsKey(institutionName) && authors.containsKey(authorName)){
+                        RelationshipEntity relationshipEntity =
+                                new RelationshipEntity(institutions.get(institutionName).getId(),authors.get(authorName).getId(),1L,RelationshipTypes.Is_Work_For);
+                        relationships.put(hashKey,relationshipEntity);
+                    }else if (institutions.containsKey(institutionName) && !authors.containsKey(authorName)){
+                        String authorInstitution = name2Enterprise.get(authorName);
+                        if ("".equals(authorInstitution) || authorInstitution == null)
+                            authorInstitution = "null";
+                        AuthorEntity authorEntity = new AuthorEntity(authorName,authorInstitution,nodeId);
+                        authors.put(authorName,authorEntity);
+                        ++nodeId;
+                        RelationshipEntity relationshipEntity =
+                                new RelationshipEntity(institutions.get(institutionName).getId(),authors.get(authorName).getId(),1L,RelationshipTypes.Is_Work_For);
+                        relationships.put(hashKey,relationshipEntity);
+                    }else if (!institutions.containsKey(institutionName) && authors.containsKey(authorName)){
+                        InstitutionEntity institutionEntity = new InstitutionEntity(institutionName,"null",nodeId);
+                        institutions.put(institutionName,institutionEntity);
+                        ++nodeId;
+                        RelationshipEntity relationshipEntity =
+                                new RelationshipEntity(institutions.get(institutionName).getId(),authors.get(authorName).getId(),1L,RelationshipTypes.Is_Work_For);
+                        relationships.put(hashKey,relationshipEntity);
+                    }else if (!institutions.containsKey(institutionName) && !authors.containsKey(authorName)){
+                        String authorInstitution = name2Enterprise.get(authorName);
+                        if ("".equals(authorInstitution) || authorInstitution == null)
+                            authorInstitution = "null";
+                        AuthorEntity authorEntity = new AuthorEntity(authorName,authorInstitution,nodeId);
+                        authors.put(authorName,authorEntity);
+                        ++nodeId;
+                        InstitutionEntity institutionEntity = new InstitutionEntity(institutionName,"null",nodeId);
+                        institutions.put(institutionName,institutionEntity);
+                        ++nodeId;
+                        RelationshipEntity relationshipEntity =
+                                new RelationshipEntity(institutions.get(institutionName).getId(),authors.get(authorName).getId(),1L,RelationshipTypes.Is_Work_For);
+                        relationships.put(hashKey,relationshipEntity);
+                    }
+                }
+            }
+        }
+
+
+        UtilWrite.WriteAuthorFile(authors);
+        UtilWrite.WriteInstitutionFile(institutions);
+        UtilWrite.WriteRelationFile(relationships);
     }
+
 
     public void generate1() {
         try {
@@ -145,7 +220,7 @@ public class GenerateHashTable {
                         String relationshipHashKey1 = institutionId1.toString() + "_" + institutionId2.toString();
                         String relationshipHashKey2 = institutionId2.toString() + "_" + institutionId1.toString();
                         if (!relationships.containsKey(relationshipHashKey1) && !relationships.containsKey(relationshipHashKey2)) {
-                            RelationshipEntity relationshipEntity = new RelationshipEntity(institutionId1, institutionId2, 1l, RelationshipTypes.cooperate);
+                            RelationshipEntity relationshipEntity = new RelationshipEntity(institutionId1, institutionId2, 1l, RelationshipTypes.Cooperate_Institution);
                             relationships.put(relationshipHashKey1, relationshipEntity);
                             relationshipId++;
                         } else if (relationships.containsKey(relationshipHashKey1)) {
@@ -178,7 +253,7 @@ public class GenerateHashTable {
                     String authorInstitutionRelationshipHashKey = authorId.toString()+"_"+institutions.get(autherInstitution).getId().toString();
                     if(!relationships.containsKey(authorInstitutionRelationshipHashKey)){
                         RelationshipEntity relationshipEntity =
-                                new RelationshipEntity(authorId, institutions.get(autherInstitution).getId(), 1l, RelationshipTypes.works_in);
+                                new RelationshipEntity(authorId, institutions.get(autherInstitution).getId(), 1l, RelationshipTypes.Is_Work_For);
                         relationships.put(authorInstitutionRelationshipHashKey, relationshipEntity);
                         relationshipId ++;
                     }
@@ -194,7 +269,7 @@ public class GenerateHashTable {
                         String relationshipHashKey1 = authorId1.toString()+"_"+authorId2.toString();
                         String relationshipHashKey2 = authorId2.toString()+"_"+authorId1.toString();
                         if (!relationships.containsKey(relationshipHashKey1) && !relationships.containsKey(relationshipHashKey2)){
-                            RelationshipEntity relationshipEntity = new RelationshipEntity(authorId1,authorId2,1L, RelationshipTypes.work_together);
+                            RelationshipEntity relationshipEntity = new RelationshipEntity(authorId1,authorId2,1L, RelationshipTypes.Cooperate_Author);
                             relationships.put(relationshipHashKey1,relationshipEntity);
                             ++relationshipId;
                         }else if (relationships.containsKey(relationshipHashKey1)){

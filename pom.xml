@@ -6,7 +6,7 @@
 	<groupId>com.tech.analysis</groupId>
 	<artifactId>tech_analysis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>tech_analysis</name>
 	<description>Demo project for Spring Boot</description>
@@ -18,22 +18,54 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
-
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.5</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!--mvn install:install-file -Dfile=IKAnalyzer3.2.5Stable.jar -DgroupId=org.wltea  -DartifactId=IKAnalyzer -Dversion=3.2.5 -Dpackaging=jar-->
+		<dependency>
+			<groupId>org.wltea</groupId>
+			<artifactId>IKAnalyzer</artifactId>
+			<version>3.2.5</version>
+			<!--<scope>system</scope>-->
+			<!--<systemPath>${basedir}/IKAnalyzer3.2.5Stable.jar</systemPath>-->
+		</dependency>
+		<!--mvn install:install-file -Dfile=IKAnalyzer-5.5.0.jar -DgroupId=org.wltea.analyzer  -DartifactId=IKAnalyzer -Dversion=5.5.0 -Dpackaging=jar-->
+		<dependency>
+			<groupId>org.wltea.analyzer</groupId>
+			<artifactId>IKAnalyzer</artifactId>
+			<version>5.5.0</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.5.0</version>
+			<!--<version>5.5.5</version>-->
+		</dependency>
+
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,20 +73,38 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--<dependency>-->
+		<!--<groupId>com.alibaba</groupId>-->
+		<!--<artifactId>druid</artifactId>-->
+		<!--<version>1.1.8</version>-->
+		<!--</dependency>-->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-			<version>1.1.8</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<!--<exclusions>-->
+			<!--<exclusion>-->
+			<!--<groupId>org.apache.tomcat</groupId>-->
+			<!--<artifactId>tomcat-jdbc</artifactId>-->
+			<!--</exclusion>-->
+			<!--</exclusions>-->
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>4.3.5.RELEASE</version>
-		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>org.springframework</groupId>-->
+		<!--<artifactId>spring-jdbc</artifactId>-->
+		<!--<version>4.3.5.RELEASE</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j</artifactId>
-			<version>3.1.0-M03</version>
+			<!--<version>3.1.0-M03</version>-->
+			<version>3.4.1</version>
+			<!--<version>3.1.0</version>-->
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.lucene</groupId>
+					<artifactId>lucene-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -65,7 +115,9 @@
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-kernel</artifactId>
-			<version>3.1.0-M03</version>
+			<!--<version>3.1.0-M03</version>-->
+			<version>3.4.1</version>
+			<!--<version>3.1.0</version>-->
 		</dependency>
 		<!--<dependency>-->
 		<!--<groupId>org.neo4j</groupId>-->
@@ -87,10 +139,10 @@
 			<artifactId>json</artifactId>
 			<version>20151123</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>springloaded</artifactId>
-		</dependency>
+		<!--<dependency>-->
+		<!--<groupId>org.springframework</groupId>-->
+		<!--<artifactId>springloaded</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -98,16 +150,35 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->
+		<!--<dependency>-->
+		<!--<groupId>org.springframework</groupId>-->
+		<!--<artifactId>springloaded</artifactId>-->
+		<!--<version>1.2.8.RELEASE</version>-->
+		<!--<scope>provided</scope>-->
+		<!--</dependency>-->
+
+
 
 
 
 	</dependencies>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
 	<build>
+		<finalName>tech_analysis</finalName>
+
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

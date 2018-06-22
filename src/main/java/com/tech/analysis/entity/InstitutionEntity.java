@@ -30,9 +30,9 @@ public class InstitutionEntity implements Serializable{
         this.name = name;
     }
 
-//    public String getLocation() {
-//        return location;
-//    }
+    public String getLocation() {
+        return location;
+    }
 
 //    public void setLocation(String location) {
 //        this.location = location;

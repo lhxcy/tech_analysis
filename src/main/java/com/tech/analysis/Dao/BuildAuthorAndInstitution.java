@@ -19,7 +19,7 @@ public class BuildAuthorAndInstitution {
     @Autowired
     private GetEnterpriseAndExpertData getEnterpriseAndExpertData;
     private String basePath = System.getProperty("user.dir");
-    //        String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
+//    private String basePath = basePath = BuildAuthorAndInstitution.class.getClassLoader().getResource("/").getPath();
 
     public void getDataAndBuildCSV(){
         getEnterpriseAndExpertData.getAllData();

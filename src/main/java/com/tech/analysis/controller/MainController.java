@@ -24,27 +24,27 @@ public class MainController {
     private DealDataService dealDataService;
     @Autowired
     private CustomTaskDao customTaskDao;
-    @Autowired
-    private DoIndexService doIndexService;
+
+    private DoIndexService doIndexService=new DoIndexService();
     @RequestMapping("/maindata")
     public String mainData(@RequestParam String id){
-//        if(!customTaskDao.check(id))return "failed";
+        if(!customTaskDao.check(id))return "spider or importdata uncomplete";
 
         //sgc
-//        matchService.whenDataUpdate();
-        //getKeyphraseSevice.updateKeyphraseForPaper();
-        //getKeyphraseSevice.updateKeyphraseForPatent();
-        //getKeyphraseSevice.getKeyphraseForExpert();
-        //getKeyphraseSevice.getKeyphraseForEnterprise();
+        matchService.whenDataUpdate();
+        getKeyphraseSevice.updateKeyphraseForPaper();
+        getKeyphraseSevice.updateKeyphraseForPatent();
+        getKeyphraseSevice.getKeyphraseForExpert();
+        customTaskDao.updateAfterSgc(id);
         //yxj
-//        doIndexService.creat_yangqiIndex();
-//        doIndexService.creat_paperIndex();
-//        doIndexService.creat_yangqipaperIndex();
-//        System.out.print("caocoaocaocoaocooaocoaoc");
+        doIndexService.creat_yangqiIndex();
+        doIndexService.creat_paperIndex();
+        doIndexService.creat_yangqipaperIndex();
+
         //xcy
-        //dealDataService.dealNeo4j();
-//
-//        customTaskDao.update(id);
+        dealDataService.getNeo4jDataBase();
+
+        customTaskDao.update(id);
         return "success";
     }
 

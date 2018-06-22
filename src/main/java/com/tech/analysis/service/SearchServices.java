@@ -10,6 +10,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.wltea.analyzer.lucene.IKQueryParser;
 import org.wltea.analyzer.lucene.IKSimilarity;
+//import org
+//import  org.  mvn install:install-file -Dfile=/home/zhzy/Downloads/xcy/Main_Tech/tech_analysis/IKAnalyzer3.2.5Stable.jar -DgroupId=org.wltea.ik-analyzer -DartifactId=ik-analyzer -Dversion=3.2.5 -Dpackaging=jar
+//import repo.org.wl
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tech.analysis.Dao.WordModel;
@@ -20,6 +23,8 @@ import java.util.List;
 
 public class SearchServices
 {
+//    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
+    private static String basePath = System.getProperty("user.dir");
     private static Logger logyangqi = LoggerFactory.getLogger("yxjyangqi");
     private static Logger logpaper = LoggerFactory.getLogger("yxjpaper");
     private  static Directory directory=null;
@@ -31,7 +36,8 @@ public class SearchServices
         JsonObject obj=new JsonObject();
         JsonArray array=new JsonArray();
         try {
-            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index" ));
+//            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqi_index" ));
+            directory = FSDirectory.open(new  File( basePath+System.getProperty("file.separator")+"yangqi_index" ));
             reader = IndexReader.open(directory);
         }catch (Exception e)
         {
@@ -128,7 +134,8 @@ public class SearchServices
         JsonObject obj=new JsonObject();
         int papernum=0,patentnum=0,prizenum=0;
         try {
-            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"paper_index" ));
+//            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"paper_index" ));
+            directory = FSDirectory.open(new  File( basePath+System.getProperty("file.separator")+"paper_index" ));
             reader = IndexReader.open(directory);
         }catch (Exception e)
         {
@@ -290,7 +297,8 @@ public class SearchServices
         JsonObject obj=new JsonObject();
         int papernum=0,patentnum=0,prizenum=0;
         try {
-            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqipaper_index" ));
+//            directory = FSDirectory.open(new  File( System.getProperty("user.dir")+System.getProperty("file.separator")+"yangqipaper_index" ));
+            directory = FSDirectory.open(new  File( basePath+System.getProperty("file.separator")+"yangqipaper_index" ));
             reader = IndexReader.open(directory);
         }catch (Exception e)
         {

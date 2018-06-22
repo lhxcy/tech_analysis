@@ -1,9 +1,11 @@
 package com.tech.analysis.controller;
 
+import com.tech.analysis.Dao.WordModel;
 import com.tech.analysis.service.DealDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DealDataController {
     @Autowired
     private DealDataService dealDataService;
+    @Autowired
+    private WordModel wordModel;
 
     /**
      *
@@ -37,7 +41,7 @@ public class DealDataController {
 
     @RequestMapping("/buildNeo4j")
     public void getData(){
-        dealDataService.buildNeo4j();
+        dealDataService.dealNeo4j();
     }
 
     /**
@@ -51,9 +55,18 @@ public class DealDataController {
     /**
      * 得到构建neo4j的基础数据
      */
-    @RequestMapping("/getNeo4jBaseData")
-    public void getNeo4jBaseData(){
-        dealDataService.getNeo4jBaseData();
+//    @RequestMapping("/getNeo4jDataBase")
+//    public void getNeo4jBaseData(){
+//        dealDataService.getNeo4jDataBase();
+//    }
+
+    @RequestMapping("/analysisword")
+    public Object analysiswords(@RequestParam String word,@RequestParam Integer number){
+        return wordModel.distance(word,number);
     }
+//    @RequestMapping("/test")
+//    public void build(){
+//        dealDataService.build();
+//    }
 
 }

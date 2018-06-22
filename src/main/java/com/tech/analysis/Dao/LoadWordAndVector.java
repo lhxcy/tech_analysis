@@ -22,7 +22,7 @@ public class LoadWordAndVector {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private String basePath = System.getProperty("user.dir");
-    //        String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
+//    private String basePath = LoadWordAndVector.class.getClassLoader().getResource("/").getPath();
 
     /**
      * 根据语料生成模型

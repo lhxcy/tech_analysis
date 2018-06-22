@@ -1,6 +1,6 @@
 package com.tech.analysis.service;
 
-import com.sun.xml.internal.bind.v2.runtime.output.Encoded;
+//import com.sun.xml.internal.bind.v2.runtime.output.Encoded;
 import com.tech.analysis.Dao.*;
 import com.tech.analysis.entity.*;
 import com.tech.analysis.util.MatchUtil;
@@ -308,6 +308,9 @@ public class MatchService {
         }
     }
 
+    public void getPatentForMatchToTableNew(){
+        patentDao.getPatentForMatchToTable();
+    }
 
     public void getPatentForMatchToTable(){
         //1、从Patent表中找出所有的patentid和enterpriseName
@@ -487,9 +490,10 @@ public class MatchService {
         getPrizeForMatch();
         preMatchPrize();
         postMatchPrize();
-        getPatentForMatchToTable();
+        getPatentForMatchToTableNew();
         preMatchPatent();
         postMatchPatent();
+        patentDao.removeDuplicate();
         preMatchPaper();
         postMatchPaper();
     }

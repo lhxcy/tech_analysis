@@ -29,13 +29,17 @@ public class WordModel {
      * @param queryWord 查询词
      * @return 5个相近的词
      */
-    public List<String> distance(String queryWord) {
+    public List<String> distance(String queryWord,Integer topSize) {
+        if(topSize!=null&&topSize>0){
+            topNSize=topSize;
+        }
         System.out.println("starting....");
-//        System.out.println(queryWord);
+        System.out.println(queryWord);
         List<String> ans = new ArrayList<>();
         double[] center = wordMap.get(queryWord);
 //        System.out.println(center.length);
         if (center == null) {
+            ans.add(queryWord);
             return ans;
         }
 
@@ -50,9 +54,9 @@ public class WordModel {
                 dist += center[i] * vector[i];
             }
             result.add(new WordEntity(entry.getKey(), dist));
-                if (resultSize < result.size()) {
-                    result.pollLast();
-                }
+            if (resultSize < result.size()) {
+                result.pollLast();
+            }
 
 //            if (dist > min) {
 //                result.add(new WordEntry(entry.getKey(), dist));
@@ -62,13 +66,19 @@ public class WordModel {
 //                min = result.last().score;
 //            }
         }
-        result.pollFirst();
+//        result.pollFirst();
 
         for (WordEntity wordEntry : result){
             ans.add(wordEntry.name);
 //            System.out.println(wordEntry.name);
         }
+
+        System.out.println(ans);
         return ans;
+    }
+
+    public List<String> distance(String queryWord){
+        return distance(queryWord,null);
     }
 
 

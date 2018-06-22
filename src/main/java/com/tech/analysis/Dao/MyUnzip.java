@@ -36,7 +36,7 @@ public class MyUnzip {
         String name = zip.getName().substring(zip.getName().lastIndexOf('\\')+1, zip.getName().lastIndexOf('.'));
 
         System.out.println(name);
-        System.out.println(descDir+name);
+//        System.out.println(descDir+name);
 //        File pathFile = new File(descDir+name);
         File pathFile = new File(descDir);
         if (!pathFile.exists()) {

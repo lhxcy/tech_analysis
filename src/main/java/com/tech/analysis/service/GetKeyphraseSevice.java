@@ -44,12 +44,13 @@ public class GetKeyphraseSevice {
 
     public void updateKeyphraseForPatent(){
 
-        //1.获取所有has_keyword字段为0的专利id列表
-        List<String> idList = patentDao.getidList();
-        //2.对每个id对该专利的abstract_cn抽取关键词，存放
-        for (String id : idList) {
-            patentDao.updatePatentKeywordsByid(id);
-        }
+//        //1.获取所有has_keyword字段为0的专利id列表
+//        List<String> idList = patentDao.getidList();
+//        //2.对每个id对该专利的abstract_cn抽取关键词，存放
+//        for (String id : idList) {
+//            patentDao.updatePatentKeywordsByid(id);
+//        }
+        patentDao.updateKeyphraseForPatent();
     }
 
     public void updateKeyphraseForProject(){
