@@ -1,0 +1,79 @@
+﻿定制专题 主要触发接口  负责数据处理、建立索引、重做neo4j数据库
+http://10.168.103.68:8080/main/maindata?id=10
+
+xcy
+
+1：总图 json字符串
+http://10.168.103.68:8080//graph/getKeywords?target=""
+
+2：总图 预测下一年的图结构   json字符串
+http://10.168.103.68:8080//graph/predict
+
+3：总图 年份演化（5年）返回的是一个 json数组
+http://10.168.103.68:8080//graph/yearKeywords
+
+
+4：技术关联谱系  关系图谱  json字符串
+http://10.168.103.68:8080//graph/getKeywords?target=人工智能
+
+5：技术关联谱系 柱形图 关键字json数组
+http://10.168.103.68:8080//graph/getKeyAndTimes
+
+6：返回词云
+http://10.168.103.68:8080//graph/getWordcloud
+
+7：返回相似的词
+http://10.168.103.68:8080//model/analysisword?word=人工智能&number=5
+
+8：触发重新建neo4j数据库
+http://10.168.103.68:8080//model/buildNeo4j
+
+
+
+yxj
+1：技术发展趋势
+http://10.168.103.68:8080//searchpaper?paper="人工智能"&year=2012
+
+2:研究发展趋势
+http://10.168.103.68:8080//searchyangqipaper?paper="人工智能"&year=2012
+
+
+
+application.properties文件下的注解
+neo4jdatabasepath表示的是当前计算机的neo4j的数据库所在地址
+neo4jpath表示当前计算机neo4j安装路径
+neo4jserver表示当前计算机ip
+neo4jname表示neo4j数据库的名字
+neo4jpassword表示neo4j数据库密码
+spring.datasource.url表是sql数据库的地址和名字
+spring.datasource.username表示sql数据库登陆名字
+spring.datasource.password表示sql数据库登陆密码
+
+
+项目注解：
+需要把py目录放入war包中
+需要安装IKAnalyzer-5.5.0.jar和IKAnalyzer3.2.5Stable.jar，pom文件里有安装方法
+
+batch.properties文件存放的是批量导入的配置
+
+
+新建neo4j数据库流程：
+运行：
+1.先运行RunForGenerateFile,调用ConvertToNode GenerateHashTable，用UtilWrite创建实体的hash文件
+2.运行Runner，利用实体的hash文件生成Neo4j数据库文件
+
+entity                 都是对实体节点所需信息封装为类，包括每个实体的属性和节点独一无二的ID
+ConvertToNode类：      封装从paper的json对象中抽出各种节点所需的信息的函数
+GernerateHashTable类： 读出csv文件，构造对象，建立关系。为了防止重复，以实体的某些属性做hash存入HashMap<String, AuthorEntity> 并存储到外部		       		文件中，每个实体有一个独一无二的ID用于标识节点之间的关系，并创建关系实体，同样存储到外部文件
+EdgeAndNodeImport类：  读取实体的hash文件，hash文件里全是需要创建的独一无二的实体节点信息，用这些信息调用数据库的创建函数，创建对应实		       		体节点，并用全文检索索引工具创建索引
+
+
+
+
+
+
+
+
+
+
+
