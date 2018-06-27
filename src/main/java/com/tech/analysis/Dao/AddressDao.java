@@ -23,7 +23,11 @@ public class AddressDao {
                 "  FROM AddressTemp a inner join CompanyAlias b on a.organization = b.aliasname)\n" +
                 "\n" +
                 "delete from AddressTemp where id in(select a.id FROM AddressTemp a inner join CompanyAlias b on a.organization = b.aliasname)";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
     }
 
     /**

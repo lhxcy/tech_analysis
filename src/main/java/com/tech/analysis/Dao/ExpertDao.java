@@ -129,7 +129,11 @@ public class ExpertDao {
         }
         if (time > 0) {
             sql = sql.substring(0, sql.length() - 1);
-            jdbcTemplate.update(sql);
+            try {//为专家表添加唯一索引，防止插入重复专家
+                jdbcTemplate.update(sql);
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
         }
         //对expert表去重
         sql = "delete from expert where id not in (SELECT MAX (id) from expert group by name,enterprisename)";

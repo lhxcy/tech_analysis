@@ -142,7 +142,11 @@ public class PatentDao {
 
     public void insertNewPatent2Enterprise(){
         String sql = "insert into Patent2Enterprise(patentid,enterpriseid) select patentid,companyid from patentForMatch a inner join CompanyAlias b on a.enterpriseName = b.aliasname";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
     }
 
     public List<Expert> getExpertPreMatch(){
@@ -164,13 +168,21 @@ public class PatentDao {
 
     public void insertNewPatent2Expert(){
         String sql = "insert into Patent2Expert select patentid,e.id from Expert e inner join (select inventors_first,d.enterpriseName,d.patentid from patent c inner join (select enterpriseName,patentid,companyid from patentForMatch a inner join CompanyAlias b on a.enterpriseName = b.aliasname) d on c.id = d.patentid and  c.enterprisename_first = d.enterpriseName) f on e.name = f.inventors_first and e.enterprisename = f.enterpriseName";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
     }
 
     public void deleteItemInPatentForMatch(){
         String sql = "delete from patentForMatch where id in (select a.id from patentForMatch a inner join CompanyAlias b on a.enterpriseName = b.aliasname)\n" +
                 "delete from patentForMatchBackup where id in (select a.id from patentForMatchBackup a inner join CompanyAlias b on a.enterpriseName = b.aliasname)";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
     }
 
     public void insertNewEnterpriseFromPatentForMatch(){
@@ -184,7 +196,11 @@ public class PatentDao {
     }
     public void insertNewCompanyAlias(){
         String sql = "insert into CompanyAlias (aliasname,companyid) select distinct enterprisename,a.id from EnterpriseInfo a inner join PatentForMatch b on a.name = b.enterprisename";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
         sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
         jdbcTemplate.update(sql);
     }
@@ -327,13 +343,20 @@ public class PatentDao {
             }
             String patentid = patentIdAndEnterpriseNames.getPatentId();
             for (String name : patentIdAndEnterpriseNames.getEnterpriseNames()) {
+                if(name.equals(""))continue;
                 sql += String.format("('%s','%s'),",patentid,name);
                 //sql2 += String.format("('%s','%s'),",patentid,name);
                 times++;
             }
         }
         if(times>0){
-            jdbcTemplate.update(sql.substring(0,sql.length()-1));
+
+            try {
+                jdbcTemplate.update(sql.substring(0,sql.length()-1));
+            } catch (Exception exc) {
+                System.out.println(exc);
+            }
+
             //jdbcTemplate.update(sql2.substring(0,sql2.length()-1));
         }
         //对patentformatch去重

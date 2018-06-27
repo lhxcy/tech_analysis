@@ -80,7 +80,11 @@ public class AuthorDao {
 //                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.addr_no = b.addr_no) d on c.name = d.display_name and c.enterprisename = d.organization)\n" +
 //                "\n" +
 //                " delete from AuthorTemp where id in (select a.id from AuthorTemp a inner join Author b on a.uid = b.uid and a.display_name = b.display_name and a.addr_no = b.addr_no)";
-        jdbcTemplate.update(sql);
+        try {
+            jdbcTemplate.update(sql);
+        } catch (Exception exc) {
+            System.out.println(exc);
+        }
     }
 
     public Map<String,List<String>> getExpertid2Uids(){
