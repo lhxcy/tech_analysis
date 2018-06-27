@@ -112,7 +112,7 @@ public class ExpertDao {
             } else {
                 sql += String.format("('%s',0,'%s','%s'),", e.getName().replace("'", "''"), e.getEnterpriseName().replace("'", "''"), e.getEnterpriseId());
                 sql = sql.substring(0, sql.length() - 1);
-                try {//为专家表添加唯一索引，防止插入重复专家
+                try {//为专家表添加唯一索引，防止插入重复专家a
                     jdbcTemplate.update(sql);
                 } catch (Exception exc) {
                     System.out.println(exc);
