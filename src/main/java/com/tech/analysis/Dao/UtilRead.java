@@ -18,8 +18,8 @@ import java.util.List;
  */
 @Component
 public class UtilRead {
-//    private static String basePath = UtilRead.class.getClassLoader().getResource("/").getPath();
-    private static String basePath = System.getProperty("user.dir");
+//    private static String basePath = System.getProperty("user.dir");
+    private static String basePath = UtilRead.class.getClassLoader().getResource("/").getPath();
 //    private static String basePath = "abc";
 //    UtilRead(){
 //        try {

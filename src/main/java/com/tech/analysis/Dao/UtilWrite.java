@@ -17,8 +17,8 @@ import java.util.List;
  * Created by XCY on 2018/4/18.
  */
 public class UtilWrite {
-    private static String basePath = System.getProperty("user.dir");
-//    private static String basePath = UtilWrite.class.getClassLoader().getResource("/").getPath();
+//    private static String basePath = System.getProperty("user.dir");
+    private static String basePath = UtilWrite.class.getClassLoader().getResource("/").getPath();
     /**
      * 将HashMap<String, double[]> wordMap 写入文件
      * @param wordMap

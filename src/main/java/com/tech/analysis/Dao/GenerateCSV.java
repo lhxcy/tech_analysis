@@ -29,8 +29,8 @@ public class GenerateCSV {
     private JdbcTemplate jdbcTemplate;
 //    @Autowired
 //    private QueryEntity queryEntity;
-    private String basePath = System.getProperty("user.dir");
-//    private String basePath = GenerateCSV.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
+//    private String basePath = System.getProperty("user.dir");
+    private String basePath = GenerateCSV.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
     private long nodeId = 0l;
     private long relationshipId = 0l;
     private long count = 0;

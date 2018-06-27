@@ -22,8 +22,8 @@ import java.util.List;
 public class GetEnterpriseAndExpertData {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private String basePath = System.getProperty("user.dir");
-//    private String basePath = GetEnterpriseAndExpertData.class.getClassLoader().getResource("/").getPath();
+//    private String basePath = System.getProperty("user.dir");
+    private String basePath = GetEnterpriseAndExpertData.class.getClassLoader().getResource("/").getPath();
     public void getAllData(){
         //得到一片论文所属专家的对象
 //        getSQLExpertData();

@@ -185,6 +185,8 @@ public class PatentDao {
     public void insertNewCompanyAlias(){
         String sql = "insert into CompanyAlias (aliasname,companyid) select distinct enterprisename,a.id from EnterpriseInfo a inner join PatentForMatch b on a.name = b.enterprisename";
         jdbcTemplate.update(sql);
+        sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
+        jdbcTemplate.update(sql);
     }
 
     public Map<String,List<String>> getExpertid2Patentids(){

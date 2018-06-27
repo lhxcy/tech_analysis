@@ -68,5 +68,7 @@ public class PrizeDao {
     public void insertNewCompanyAlias(){
         String sql = "insert into CompanyAlias (aliasname,companyid) select distinct enterprisename as aliasname,a.id as companyid from EnterpriseInfo a inner join PrizeForMatch b on a.name = b.enterprisename";
         jdbcTemplate.update(sql);
+        sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
+        jdbcTemplate.update(sql);
     }
 }

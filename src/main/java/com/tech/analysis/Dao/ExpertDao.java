@@ -191,6 +191,7 @@ public class ExpertDao {
                 " values";
         int time = 0;
         for (Map.Entry<String,String> entry : expertid2Keyword.entrySet()) {
+            if(entry.getKey()==null)continue;
             if(time<999){
                 sql += String.format("('%s','%s'),",entry.getKey(),entry.getValue().replace("'","''"));
                 time++;

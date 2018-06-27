@@ -18,8 +18,8 @@ import java.util.List;
 public class BuildAuthorAndInstitution {
     @Autowired
     private GetEnterpriseAndExpertData getEnterpriseAndExpertData;
-    private String basePath = System.getProperty("user.dir");
-//    private String basePath = basePath = BuildAuthorAndInstitution.class.getClassLoader().getResource("/").getPath();
+//    private String basePath = System.getProperty("user.dir");
+    private String basePath = basePath = BuildAuthorAndInstitution.class.getClassLoader().getResource("/").getPath();
 
     public void getDataAndBuildCSV(){
         getEnterpriseAndExpertData.getAllData();

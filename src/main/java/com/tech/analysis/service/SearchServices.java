@@ -23,8 +23,8 @@ import java.util.List;
 
 public class SearchServices
 {
-//    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
-    private static String basePath = System.getProperty("user.dir");
+    private static String basePath = SearchServices.class.getClassLoader().getResource("/").getPath();
+//    private static String basePath = System.getProperty("user.dir");
     private static Logger logyangqi = LoggerFactory.getLogger("yxjyangqi");
     private static Logger logpaper = LoggerFactory.getLogger("yxjpaper");
     private  static Directory directory=null;
@@ -201,7 +201,7 @@ public class SearchServices
             logpaper.info("进入单字段查询");
             try {
                 Query query1 = IKQueryParser.parse("paperkeywords",keywords[0]);//不支持不分词的filed进行查询
-                topDocs = indexSearcher.search(query1,null, 100);
+                topDocs = indexSearcher.search(query1,null, 10000);
                 logpaper.info(""+topDocs.totalHits);
             }catch (Exception e)
             {
@@ -224,7 +224,7 @@ public class SearchServices
 //                String[] q={"高精度","高质量"};
                 String[] q=newkeywords;
                 Query query1 = IKQueryParser.parseMultiField(searchField,q,clauses);//不支持不分词的filed进行查询
-                topDocs = indexSearcher.search(query1,null, 100);
+                topDocs = indexSearcher.search(query1,null, 10000);
             }catch (Exception e)
             {
                 logpaper.error("查找数据失败");
@@ -239,8 +239,11 @@ public class SearchServices
                 logpaper.info(doc.get("label"));
                 int pubyear=Integer.valueOf(doc.get("pubyear"));
                 logpaper.info("年份"+pubyear);
-                if(pubyear>=year&&pubyear<=currentyear)
+                float goal=scoreDoc.score;
+                if(pubyear>=year&&pubyear<=currentyear&&goal>=0.01)
                 {
+                    System.out.println(scoreDoc.score);
+                    System.out.println(doc.get("paperkeywords"));
                     logpaper.info("查询年份"+pubyear);
                     logpaper.info("进入");
                     int temp=pubyear-year;
@@ -342,7 +345,7 @@ public class SearchServices
             logpaper.info("进入单字段查询");
             try {
                 Query query1 = IKQueryParser.parse("paperkeywords",keywords[0]);//不支持不分词的filed进行查询
-                topDocs = indexSearcher.search(query1,null, 100);
+                topDocs = indexSearcher.search(query1,null, 10000);
                 logpaper.info(""+topDocs.totalHits);
             }catch (Exception e)
             {
@@ -365,7 +368,7 @@ public class SearchServices
 //                String[] q={"高精度","高质量"};
                 String[] q=newkeywords;
                 Query query1 = IKQueryParser.parseMultiField(searchField,q,clauses);//不支持不分词的filed进行查询
-                topDocs = indexSearcher.search(query1,null, 100);
+                topDocs = indexSearcher.search(query1,null, 10000);
             }catch (Exception e)
             {
                 logpaper.error("查找数据失败");
@@ -380,8 +383,11 @@ public class SearchServices
                 logpaper.info(doc.get("label"));
                 int pubyear=Integer.valueOf(doc.get("pubyear"));
                 logpaper.info("年份"+pubyear);
-                if(pubyear>=year&&pubyear<=currentyear)
+                float goal=scoreDoc.score;
+                if(pubyear>=year&&pubyear<=currentyear&&goal>=0.01)
                 {
+                    System.out.println(scoreDoc.score);
+                    System.out.println(doc.get("paperkeywords"));
                     logpaper.info("查询年份"+pubyear);
                     logpaper.info("进入");
                     int temp=pubyear-year;

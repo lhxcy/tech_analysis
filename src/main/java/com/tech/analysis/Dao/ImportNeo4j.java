@@ -18,8 +18,8 @@ import static org.neo4j.driver.v1.Values.parameters;
 public class ImportNeo4j {
     private static String neo4jdatabasepath = PropertyUtil.getProperty("neo4jdatabasepath");
     private static String neo4jpath = PropertyUtil.getProperty("neo4jpath");
-    private static String basePath = System.getProperty("user.dir");
-//    private String basePath = ImportNeo4j.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
+//    private static String basePath = System.getProperty("user.dir");
+    private String basePath = ImportNeo4j.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
     /**
      * neo4j导入数据
      *

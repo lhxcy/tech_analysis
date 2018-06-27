@@ -21,7 +21,7 @@ public class CustomTaskDao {
     private JdbcTemplate jdbcTemplate;
 
     public void update(String id){
-        String sql = String.format("update customtask set status = 1 and status_neo4j_data = 1 where id = '%s'",id);
+        String sql = String.format("update customtask set status = 1 , status_neo4j_data = 1 where id = '%s'",id);
         jdbcTemplate.update(sql);
     }
 
@@ -42,6 +42,7 @@ public class CustomTaskDao {
                 return res;
             }
         });
+        if(list==null||list.size()==0)return false;
         String res = list.get(0);
         String[] r = res.split(",");
         if(r[0].equals("1")&&r[1].equals("1"))return true;

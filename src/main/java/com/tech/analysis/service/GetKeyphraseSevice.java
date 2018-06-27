@@ -131,7 +131,7 @@ public class GetKeyphraseSevice {
         Map<String,String> enterpriseid2Keyword = new HashMap<>();
         for (String enterpriseid : enterpriseid2Keywords.keySet()) {
             JSONObject obj = convertUtil.getKeywordJsonByStringList(enterpriseid2Keywords.get(enterpriseid));
-            expertid2Keyword.put(enterpriseid,obj.toString());
+            enterpriseid2Keyword.put(enterpriseid,obj.toString());
         }
         enterpriseDao.updateKeyowrdsForEnterprise(enterpriseid2Keyword);
         enterpriseid2Keyword = null;

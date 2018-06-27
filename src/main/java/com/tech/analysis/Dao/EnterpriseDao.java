@@ -259,9 +259,9 @@ public class EnterpriseDao {
             public String mapRow(ResultSet resultSet, int i) throws SQLException {
                 String enterpriseid= resultSet.getString("enterpriseid");
                 String expertid = resultSet.getString("expertid");
-                if(enterprise2Experts.get(enterpriseid) == null){
+                if(!enterprise2Experts.containsKey(enterpriseid)){
                     LinkedList<String> expertidList = new LinkedList<>();
-                    enterprise2Experts.put(expertid,expertidList);
+                    enterprise2Experts.put(enterpriseid,expertidList);
                 }
                 enterprise2Experts.get(enterpriseid).add(expertid);
                 return "null";

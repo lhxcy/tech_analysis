@@ -28,8 +28,8 @@ public class EdgeAndNodeImport {
     BatchInserter inserter;
     BatchInserterIndexProvider indexProvider;
     BatchInserterIndex author_index, institution_index;
-    private String basePath = System.getProperty("user.dir");
-//    private static String basePath = UtilWrite.class.getClassLoader().getResource("/").getPath();
+//    private String basePath = System.getProperty("user.dir");
+    private static String basePath = UtilWrite.class.getClassLoader().getResource("/").getPath();
 
 
     private final String AUTHOR_INDEX = "author";

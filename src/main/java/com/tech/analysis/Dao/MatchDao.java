@@ -56,6 +56,8 @@ public class MatchDao {
         try{
             String sql = "insert into CompanyAlias (aliasname,companyid) select distinct name,a.id from EnterpriseInfo a inner join AddressTemp b on a.name = b.organization";
             jdbcTemplate.update(sql);
+            sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
+            jdbcTemplate.update(sql);
         }catch(Exception e){}
 
     }

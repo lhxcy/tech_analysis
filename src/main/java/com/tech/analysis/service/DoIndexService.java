@@ -21,8 +21,8 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 @Service
 public class DoIndexService {
-//    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
-    private static String basePath = System.getProperty("user.dir");
+    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
+//        private static String basePath = System.getProperty("user.dir");
     public  static String creatIndex()
     {
         final String cfn = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -197,7 +197,7 @@ public class DoIndexService {
         try {
             Class.forName(cfn);
             con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
-            String sql = "select UID,keywords_cn  as name,pubyear from Paper where keywords_cn is not null and has_keywords='1'\n" +
+            String sql = "select UID,keywords_cn  as name,pubyear from Paper where keywords_cn is not null and (has_keywords='10' or has_keywords='1')\n" +
                     "union\n" +
                     "select code as UID,name,year as pubyear  from Prize where id>"+priceid+"\n" +
                     "union \n" +
@@ -297,7 +297,7 @@ public class DoIndexService {
         try {
             Class.forName(cfn);
             con = DriverManager.getConnection(url,"sa","1q2w3e4r5t!");
-            String sql = "select UID,keywords_cn  as name,pubyear from Paper where keywords_cn is not null and has_keywords='1' and UID in (select distinct uid from (SELECT id\n" +
+            String sql = "select UID,keywords_cn  as name,pubyear from Paper where keywords_cn is not null and (has_keywords='10' or has_keywords='1') and UID in (select distinct uid from (SELECT id\n" +
                     "  FROM EnterpriseInfo where enterprisetype = 0) a inner join Address b on a.id = b.companyid)\n" +
                     "union\n" +
                     "select code as UID,name,year as pubyear  from Prize where id>"+priceid+"and code in (select distinct prizecode from (SELECT id\n" +

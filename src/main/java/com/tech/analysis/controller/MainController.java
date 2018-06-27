@@ -42,7 +42,7 @@ public class MainController {
         doIndexService.creat_yangqipaperIndex();
 
         //xcy
-        dealDataService.getNeo4jDataBase();
+//        dealDataService.dealNeo4j();
 
         customTaskDao.update(id);
         return "success";
