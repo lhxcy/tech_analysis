@@ -81,4 +81,9 @@ public class PrizeDao {
         sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
         jdbcTemplate.update(sql);
     }
+
+    public void deletePrizeTemp(){
+        String sql = "delete from prizetemp";
+        jdbcTemplate.update(sql);
+    }
 }

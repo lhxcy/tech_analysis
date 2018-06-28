@@ -490,6 +490,7 @@ public class MatchService {
         getPrizeForMatch();
         preMatchPrize();
         postMatchPrize();
+        prizeDao.deletePrizeTemp();
         getPatentForMatchToTableNew();
         preMatchPatent();
         postMatchPatent();
