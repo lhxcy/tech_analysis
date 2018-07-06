@@ -31,20 +31,41 @@ public class MainController {
         if(!customTaskDao.check(id))return "spider or importdata uncomplete";
 
         //sgc
-        matchService.whenDataUpdate();
-        getKeyphraseSevice.updateKeyphraseForPaper();
-        getKeyphraseSevice.updateKeyphraseForPatent();
-        getKeyphraseSevice.getKeyphraseForExpert();
-        customTaskDao.updateAfterSgc(id);
+        try{
+            matchService.whenDataUpdate();
+            getKeyphraseSevice.updateKeyphraseForPaper();
+            getKeyphraseSevice.updateKeyphraseForPatent();
+            getKeyphraseSevice.getKeyphraseForExpert();
+            customTaskDao.updateAfterSgc(id);
+        }catch(Exception e){
+            String msg = e.toString();
+            customTaskDao.updateErrorMsg("msg_deal_data",msg,id);
+            return "error when data update: "+msg;
+        }
+
         //yxj
-        doIndexService.creat_yangqiIndex();
-        doIndexService.creat_paperIndex();
-        doIndexService.creat_yangqipaperIndex();
+        try{
+            doIndexService.creat_yangqiIndex();
+            doIndexService.creat_paperIndex();
+            doIndexService.creat_yangqipaperIndex();
+        }catch(Exception e){
+            String msg = e.toString();
+            customTaskDao.updateErrorMsg("msg_deal_data",msg,id);
+            return "error when create Index: "+msg;
+        }
+
 
         //xcy
 //        dealDataService.dealNeo4j();
 
-        customTaskDao.update(id);
+        try{
+            customTaskDao.update(id);
+        }catch(Exception e){
+            String msg = e.toString();
+            customTaskDao.updateErrorMsg("msg_neo4j_data",msg,id);
+            return "error when create Neo4j: "+msg;
+        }
+
         return "success";
     }
 

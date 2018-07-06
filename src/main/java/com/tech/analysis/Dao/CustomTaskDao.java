@@ -49,4 +49,14 @@ public class CustomTaskDao {
         return false;
     }
 
+
+    public void updateErrorMsg(String colum,String msg,String id){
+        String sql = String.format("update customtask set %s = '%s' where id = '%s'",colum,msg,id);
+        try{
+            jdbcTemplate.update(sql);
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
 }
