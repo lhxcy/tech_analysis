@@ -43,7 +43,7 @@ def writeCutKeyword(sourceFile,targetFile,stopwordsFile):
 
 def getDealData():
 	# jieba.load_userdict("/home/zhzy/Downloads/xcy/tech_analysis/py/model/keyDict.dat")
-	# sourceFile = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/OriginalData.dat"
+	# sourceFile = "/home/zh zy/Downloads/xcy/tech_analysis/py/model/OriginalData.dat"
 	# targetFile = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/DealedData.dat"
 	# stopwordsFile = "/home/zhzy/Downloads/xcy/tech_analysis/py/model/stopwords.txt"
 	jieba.load_userdict(user_dir+os.sep+"keyDict.dat")

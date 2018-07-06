@@ -88,9 +88,14 @@ public class GetCommunity {
 
         for(String key : ciyun.keySet()){
             JSONObject obj = new JSONObject();
-            obj.put("name",key);
-            obj.put("size",ciyun.get(key));
-            jsonArray.put(obj);
+            try {
+                obj.put("name",key);
+                obj.put("size",ciyun.get(key));
+                jsonArray.put(obj);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
 
         return jsonArray.toString();

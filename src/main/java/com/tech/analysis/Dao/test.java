@@ -68,8 +68,11 @@ public class test {
         }
     }
 
-    public static void main(String[] args) throws Exception{
-
+    public void ko() throws RuntimeException{
+        System.out.println("jijoijgoi");
+    }
+    public static void main(String[] args){ //throws Exception{
+    new test().ko();
 
 
         //String basePath = System.getProperty("user.dir");
