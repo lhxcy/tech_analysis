@@ -50,7 +50,7 @@ public class CustomTaskDao {
     }
 
 
-    public void updateErrorMsg(String colum,String msg,String id){
+    public void updateMsg(String colum,String msg,String id){
         String sql = String.format("update customtask set %s = '%s' where id = '%s'",colum,msg,id);
         try{
             jdbcTemplate.update(sql);

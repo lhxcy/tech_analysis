@@ -39,10 +39,10 @@ public class MainController {
             customTaskDao.updateAfterSgc(id);
         }catch(Exception e){
             String msg = e.toString();
-            customTaskDao.updateErrorMsg("msg_deal_data",msg,id);
+            customTaskDao.updateMsg("msg_deal_data",msg,id);
             return "error when data update: "+msg;
         }
-
+        customTaskDao.updateMsg("msg_deal_data","update data successs",id);
         //yxj
         try{
             doIndexService.creat_yangqiIndex();
@@ -50,22 +50,22 @@ public class MainController {
             doIndexService.creat_yangqipaperIndex();
         }catch(Exception e){
             String msg = e.toString();
-            customTaskDao.updateErrorMsg("msg_deal_data",msg,id);
+            customTaskDao.updateMsg("msg_deal_data",msg,id);
             return "error when create Index: "+msg;
         }
-
+        customTaskDao.updateMsg("msg_deal_data","create Index successs",id);
 
         //xcy
-//        dealDataService.dealNeo4j();
+//        try{
+//            dealDataService.dealNeo4j();
+//        }catch(Exception e){
+//            String msg = e.toString();
+//            customTaskDao.updateMsg("msg_neo4j_data",msg,id);
+//            return "error when create Neo4j: "+msg;
+//        }
+//        customTaskDao.updateMsg("msg_neo4j_data","create Neo4j successs",id);
 
-        try{
-            customTaskDao.update(id);
-        }catch(Exception e){
-            String msg = e.toString();
-            customTaskDao.updateErrorMsg("msg_neo4j_data",msg,id);
-            return "error when create Neo4j: "+msg;
-        }
-
+        customTaskDao.update(id);
         return "success";
     }
 
