@@ -113,13 +113,13 @@ public class GetCommunity {
             obj.put("size",map.get(string));
             jsonArray.put(obj);
         }
-        System.out.println(jsonArray);
+        //System.out.println(jsonArray);
         return jsonArray.toString();
     }
 
     public HashMap<String, Integer> getMaxKeyAndTimes(){
         List<String> list = UtilRead.readQuery();
-        System.out.println(list);
+        //System.out.println(list);
         HashMap<String,Integer> keywordstimesMap = new HashMap<>();
         ConnectAndOperNeo4j connect = new ConnectAndOperNeo4j();
         StatementResult result;

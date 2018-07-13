@@ -234,7 +234,7 @@ public class PaperDao {
             System.out.println(uidTexts.size());
             int num = 1;
             for(UidText ut : uidTexts){
-                if((num++)%1000==0)System.out.println("----------------------- "+num+" ----------------------");
+                //if((num++)%1000==0)System.out.println("----------------------- "+num+" ----------------------");
                 if(ut.getText()==null)ut.setText("");
                 else{
                     List<String> phraseList = HanLP.extractPhrase(ut.getText(),5);

@@ -41,7 +41,9 @@ public class PrizeDao {
                 try{
                     sql += String.format("('%s','%s','%s')",p.getCode(),authorAndEnterprise[1].substring(0,authorAndEnterprise[1].length()-1),p.getPrizeid());
                     jdbcTemplate.update(sql);
-                }catch (Exception e){System.out.println(p.getPrizeid()+" : "+a);}
+                }catch (Exception e){
+                    System.out.println(p.getPrizeid()+" : "+a);
+                }
 
             }
         }
@@ -66,7 +68,7 @@ public class PrizeDao {
         try{
             jdbcTemplate.update(sql);
         }catch(Exception e){
-            System.out.println("++++++++++++Prize 插入专家失败++++++++++++++++");
+            System.out.println("存在重复机构");
         }
     }
 

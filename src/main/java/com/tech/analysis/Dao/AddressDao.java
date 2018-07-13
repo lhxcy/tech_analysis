@@ -26,7 +26,8 @@ public class AddressDao {
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+//            System.out.println(exc);
+            exc.printStackTrace();
         }
     }
 
@@ -39,7 +40,8 @@ public class AddressDao {
         try{
             jdbcTemplate.update(sql);
         }catch(Exception e){
-            System.out.println("++++++++++++Paper 插入专家失败++++++++++++++++");
+//            System.out.println("++++++++++++Paper 插入专家失败++++++++++++++++");
+            e.printStackTrace();
         }
     }
 }

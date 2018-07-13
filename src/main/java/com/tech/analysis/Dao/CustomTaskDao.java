@@ -55,7 +55,8 @@ public class CustomTaskDao {
         try{
             jdbcTemplate.update(sql);
         }catch(Exception e){
-            System.out.println(e.toString());
+//            System.out.println(e.toString());
+            e.printStackTrace();
         }
     }
 

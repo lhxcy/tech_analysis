@@ -145,7 +145,7 @@ public class PatentDao {
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+            //exc.printStackTrace();
         }
     }
 
@@ -171,7 +171,7 @@ public class PatentDao {
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+            //exc.printStackTrace();
         }
     }
 
@@ -181,7 +181,7 @@ public class PatentDao {
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+            //exc.printStackTrace();
         }
     }
 
@@ -191,7 +191,7 @@ public class PatentDao {
         try{
             jdbcTemplate.update(sql);
         }catch(Exception e){
-            System.out.println("++++++++++++Patent 插入专家失败++++++++++++++++");
+            //e.printStackTrace();
         }
     }
     public void insertNewCompanyAlias(){
@@ -199,7 +199,7 @@ public class PatentDao {
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+            //exc.printStackTrace();
         }
         sql = "delete from CompanyAlias where id not in (select min(id) from CompanyAlias group by aliasname)";
         jdbcTemplate.update(sql);
@@ -257,7 +257,7 @@ public class PatentDao {
         }catch(Exception e){}
         List<UidText> uidTexts = getForKeywords();
         while(uidTexts.size() > 0){
-            System.out.println("+++++++++++++++start for ex+++++++++++++++++");
+            //System.out.println("+++++++++++++++start for ex+++++++++++++++++");
             int num = 1;
             for(UidText ut : uidTexts){
 
@@ -334,7 +334,7 @@ public class PatentDao {
         //String sql2 = "insert into patentForMatchBackup (patentid,enterpriseName) values";
         for (PatentIdAndEnterpriseNames patentIdAndEnterpriseNames : patentIdAndEnterpriseNamesList) {
             if(times>=900){
-                System.out.println("---------------"+times);
+                //System.out.println("---------------"+times);
                 jdbcTemplate.update(sql.substring(0,sql.length()-1));
                 //jdbcTemplate.update(sql2.substring(0,sql2.length()-1));
                 sql = "insert into patentForMatch (patentid,enterpriseName) values";
@@ -354,7 +354,7 @@ public class PatentDao {
             try {
                 jdbcTemplate.update(sql.substring(0,sql.length()-1));
             } catch (Exception exc) {
-                System.out.println(exc);
+                //exc.printStackTrace();
             }
 
             //jdbcTemplate.update(sql2.substring(0,sql2.length()-1));

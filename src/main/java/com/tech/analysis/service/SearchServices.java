@@ -242,8 +242,8 @@ public class SearchServices
                 float goal=scoreDoc.score;
                 if(pubyear>=year&&pubyear<=currentyear&&goal>=0.01)
                 {
-                    System.out.println(scoreDoc.score);
-                    System.out.println(doc.get("paperkeywords"));
+//                    System.out.println(scoreDoc.score);
+//                    System.out.println(doc.get("paperkeywords"));
                     logpaper.info("查询年份"+pubyear);
                     logpaper.info("进入");
                     int temp=pubyear-year;
@@ -386,8 +386,8 @@ public class SearchServices
                 float goal=scoreDoc.score;
                 if(pubyear>=year&&pubyear<=currentyear&&goal>=0.01)
                 {
-                    System.out.println(scoreDoc.score);
-                    System.out.println(doc.get("paperkeywords"));
+//                    System.out.println(scoreDoc.score);
+//                    System.out.println(doc.get("paperkeywords"));
                     logpaper.info("查询年份"+pubyear);
                     logpaper.info("进入");
                     int temp=pubyear-year;

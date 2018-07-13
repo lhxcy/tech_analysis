@@ -51,7 +51,7 @@ public class GetEnterpriseAndExpertData {
                 String fathercode =  rs.getString("fathercode");
                 if (name == null || "".equals(name)||code == null||fathercode==null)
                     return "";
-                System.out.println(name.trim()+","+code.trim()+","+fathercode.trim());
+                //System.out.println(name.trim()+","+code.trim()+","+fathercode.trim());
                 return name.trim()+","+code.trim()+","+fathercode.trim();
             }
         });

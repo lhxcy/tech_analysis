@@ -91,7 +91,7 @@ public class GenerateCSV {
                     }
                     ++goodCount;
                     out.write(string);
-                    System.out.println("paper: "+string);
+                   // System.out.println("paper: "+string);
                     out.newLine();
                     out.flush();
                 }
@@ -105,7 +105,7 @@ public class GenerateCSV {
                     }
                     ++goodCount1;
                     out.write(string);
-                    System.out.println("patent: "+string);
+                    //System.out.println("patent: "+string);
                     out.newLine();
                     out.flush();
                 }
@@ -189,7 +189,7 @@ public class GenerateCSV {
                 keywords.add(strings[i].trim().replace("\"",""));
             }
         }else {
-            System.out.println("error line: " + line + " " + strings.length);
+            //System.out.println("error line: " + line + " " + strings.length);
 //            return null;
             return;
         }
@@ -207,7 +207,7 @@ public class GenerateCSV {
         String[] strings = line.trim().split(",");//paperAndPatent.dat用空格区分
         if (strings.length<=2 || strings[0].trim().length() != 4){
             ++yearCount;
-            System.out.println("error data: " + line +" "+ strings.length);
+            //System.out.println("error data: " + line +" "+ strings.length);
             return;
         }
         if (strings.length > 2){
@@ -239,7 +239,7 @@ public class GenerateCSV {
             List<String> getKeywordsList = new ArrayList<>();
             List<Long> keywordIdList = new ArrayList<Long>();
             while (true) {
-                System.out.println("行数： "+(++lineCount));
+                //System.out.println("行数： "+(++lineCount));
                 line = bufferedReader.readLine();
                 if (line == null || line.trim().equals("")) break;
                 if(getKeywordsList.size() > 0)
@@ -303,7 +303,7 @@ public class GenerateCSV {
             List<String> getKeywords = new ArrayList<>();
             List<Long> keywordIdList = new ArrayList<Long>();
             while (true) {
-                System.out.println("行数： "+(++lineCount));
+                //System.out.println("行数： "+(++lineCount));
 //                System.out.println(line);
                 line = bufferedReader.readLine();
                 if (line == null || line.trim().equals("")) break;
@@ -373,7 +373,7 @@ public class GenerateCSV {
             List<String> getYearKeywordsList = new ArrayList<>();
             List<Long> yearKeywordIdList = new ArrayList<Long>();
             while (true) {
-                System.out.println("行数： "+(++lineCount));
+                //System.out.println("行数： "+(++lineCount));
                 line = bufferedReader.readLine();
                 if (line == null || line.trim().equals("")) break;
                 if(getYearKeywordsList.size() > 0)
@@ -430,7 +430,7 @@ public class GenerateCSV {
             List<String> getYearKeywords = new ArrayList<>();
             List<Long> yearKeywordIdList = new ArrayList<Long>();
             while (true) {
-                System.out.println("行数： "+(++lineCount));
+                //System.out.println("行数： "+(++lineCount));
                 line = bufferedReader.readLine();
                 if (line == null || line.trim().equals("")) break;
 

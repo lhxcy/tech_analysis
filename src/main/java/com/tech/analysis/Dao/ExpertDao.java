@@ -115,7 +115,8 @@ public class ExpertDao {
                 try {//为专家表添加唯一索引，防止插入重复专家a
                     jdbcTemplate.update(sql);
                 } catch (Exception exc) {
-                    System.out.println(exc);
+                    //System.out.println(exc);
+                    exc.printStackTrace();
                 }
                 time = 0;
                 sql = "insert into Expert (name,isdeath,enterprisename,enterpriseid) values";
@@ -132,7 +133,8 @@ public class ExpertDao {
             try {//为专家表添加唯一索引，防止插入重复专家
                 jdbcTemplate.update(sql);
             } catch (Exception exc) {
-                System.out.println(exc);
+//                System.out.println(exc);
+                exc.printStackTrace();
             }
         }
         //对expert表去重

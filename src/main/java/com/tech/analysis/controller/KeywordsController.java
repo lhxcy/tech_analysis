@@ -25,7 +25,7 @@ public class KeywordsController {
     public String getKeywords(@RequestParam String target){
         //String target = (String) map.get("target");//目标词汇
 
-        System.out.println(target);
+        //System.out.println(target);
         return keywordsService.getTargetDependKeywords(target);
     }
 

@@ -70,14 +70,14 @@ public class DoIndexService {
             }
             while(res.next()){
                 i=i+1;
-                System.out.println(i);
+                //System.out.println(i);
                 String title = res.getString("name");//获取test_name列的元素                                                                                                                                                    ;
-                System.out.println("姓名："+title);
+                //System.out.println("姓名："+title);
                 Document doc= getDocument(res);
                 writer.addDocument(doc);
-                System.out.println("索引创建完毕");
-                System.out.print(System.currentTimeMillis() - start);
-                System.out.println(" total milliseconds");
+//                System.out.println("索引创建完毕");
+//                System.out.print(System.currentTimeMillis() - start);
+//                System.out.println(" total milliseconds");
             }
             writer.close();
         } catch (Exception e) {
@@ -135,14 +135,14 @@ public class DoIndexService {
             }
             while(res.next()){
                 i=i+1;
-                System.out.println(i);
+                //System.out.println(i);
                 String title = res.getString("name");//获取test_name列的元素                                                                                                                                                    ;
-                System.out.println("企业名字是："+title);
+                //System.out.println("企业名字是："+title);
                 Document doc= getyangqiDocument(res);
                 writer.addDocument(doc);
-                System.out.println("索引创建完毕");
-                System.out.print(System.currentTimeMillis() - start);
-                System.out.println(" total milliseconds");
+//                System.out.println("索引创建完毕");
+//                System.out.print(System.currentTimeMillis() - start);
+//                System.out.println(" total milliseconds");
             }
             sql="select max(id) as id from EnterpriseInfo";
             statement = con.prepareStatement(sql);
@@ -151,7 +151,7 @@ public class DoIndexService {
             while (res.next())
             {
                 Enterid = res.getString("id");//获取test_name列的元素
-                System.out.println(Enterid);
+                //System.out.println(Enterid);
             }
 //            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt",Enterid);
             setId(basePath+System.getProperty("file.separator")+"flag/EnterpriseInfo.txt",Enterid);
@@ -217,14 +217,14 @@ public class DoIndexService {
             }
             while(res.next()){
                 i=i+1;
-                System.out.println(i);
+                //System.out.println(i);
                 String title = res.getString("name");//获取test_name列的元素                                                                                                                                                    ;
-                System.out.println("文献关键字："+title);
+                //System.out.println("文献关键字："+title);
                 Document doc= getpaperDocument(res);
                 writer.addDocument(doc);
-                System.out.println("索引创建完毕");
-                System.out.print(System.currentTimeMillis() - start);
-                System.out.println(" total milliseconds");
+//                System.out.println("索引创建完毕");
+//                System.out.print(System.currentTimeMillis() - start);
+//                System.out.println(" total milliseconds");
             }
             //更新paper表格，建立所以以后把10变成11
             sql="update paper set has_keywords='11' where has_keywords='10'";
@@ -237,7 +237,7 @@ public class DoIndexService {
             while (res.next())
             {
                 priceid = res.getString("id");//获取test_name列的元素
-                System.out.println(priceid);
+                //System.out.println(priceid);
             }
 //            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/price.txt",priceid);
             setId(basePath+System.getProperty("file.separator")+"flag/price.txt",priceid);
@@ -248,13 +248,13 @@ public class DoIndexService {
             while (res.next())
             {
                 patentid =res.getString("id");//获取test_name列的元素
-                System.out.println(patentid);
+                //System.out.println(patentid);
             }
 //            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/patent.txt",patentid);
             setId(basePath+System.getProperty("file.separator")+"flag/patent.txt",patentid);
-            System.out.println("索引创建完毕");
-            System.out.print((System.currentTimeMillis() - start)/1000);
-            System.out.println(" total milliseconds");
+//            System.out.println("索引创建完毕");
+//            System.out.print((System.currentTimeMillis() - start)/1000);
+//            System.out.println(" total milliseconds");
             writer.close();
         } catch (Exception e) {
             // TODO: handle exception
@@ -320,14 +320,14 @@ public class DoIndexService {
             }
             while(res.next()){
                 i=i+1;
-                System.out.println(i);
+                //System.out.println(i);
                 String title = res.getString("name");//获取test_name列的元素                                                                                                                                                    ;
-                System.out.println("文献关键字："+title);
+                //System.out.println("文献关键字："+title);
                 Document doc= getpaperDocument(res);
                 writer.addDocument(doc);
-                System.out.println("索引创建完毕");
-                System.out.print(System.currentTimeMillis() - start);
-                System.out.println(" total milliseconds");
+//                System.out.println("索引创建完毕");
+//                System.out.print(System.currentTimeMillis() - start);
+//                System.out.println(" total milliseconds");
             }
             //更新paper表格，建立所以以后把10变成11
             sql="update paper set has_keywords='11' where has_keywords='10'";
@@ -340,7 +340,7 @@ public class DoIndexService {
             while (res.next())
             {
                 priceid = res.getString("id");//获取test_name列的元素
-                System.out.println(priceid);
+                //System.out.println(priceid);
             }
 //            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
             setId(basePath+System.getProperty("file.separator")+"flag/yangqiprice.txt",priceid);
@@ -351,7 +351,7 @@ public class DoIndexService {
             while (res.next())
             {
                 patentid =res.getString("id");//获取test_name列的元素
-                System.out.println(patentid);
+                //System.out.println(patentid);
             }
 //            setId(System.getProperty("user.dir")+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);
             setId(basePath+System.getProperty("file.separator")+"flag/yangqipatent.txt",patentid);

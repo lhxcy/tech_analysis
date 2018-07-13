@@ -133,16 +133,17 @@ public class SearchController {
 //            avoid.put("avoid_company",avoid_company); }
         JsonObject obj=new JsonObject();
         try{
-            System.out.println("start");
-            System.out.println(str1.length);
-            System.out.println(avoid_people);
-            System.out.println(avoid_company);
+//            System.out.println("start");
+//            System.out.println(str1.length);
+//            System.out.println(avoid_people);
+//            System.out.println(avoid_company);
 //             obj=SearchExpert.search(str1,str2,page_size,current_page);
 //            obj=test_search.search(str1,str2,avoid,page_size,current_page);
             obj=Search4.search(str1,str2,page_size,current_page);
         }catch (Exception e)
         {
-            System.out.println(e);
+            //System.out.println(e);
+            e.printStackTrace();
         }
         String str=obj.toString();
 

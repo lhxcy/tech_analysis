@@ -206,15 +206,15 @@ public class KeywordsDao {
                 community.put(data.get(string).get(0),soncommunity);
             }
         }
-        for (int i : community.keySet()){
-            int count = 0;
-            System.out.println("partitionKey:  " + i);
-            for (int j : community.get(i).keySet()){
-                System.out.println("   partitionKey1:  " + j  + "  count: "+community.get(i).get(j).size()+" " + community.get(i).get(j));
-                count += community.get(i).get(j).size();
-            }
-            System.out.println("  count " + count);
-        }
+//        for (int i : community.keySet()){
+//            int count = 0;
+//            System.out.println("partitionKey:  " + i);
+//            for (int j : community.get(i).keySet()){
+//                System.out.println("   partitionKey1:  " + j  + "  count: "+community.get(i).get(j).size()+" " + community.get(i).get(j));
+//                count += community.get(i).get(j).size();
+//            }
+//            System.out.println("  count " + count);
+//        }
         System.out.println(community.size());
         return community;
     }

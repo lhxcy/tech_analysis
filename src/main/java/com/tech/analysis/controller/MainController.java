@@ -38,7 +38,8 @@ public class MainController {
             getKeyphraseSevice.getKeyphraseForExpert();
             customTaskDao.updateAfterSgc(id);
         }catch(Exception e){
-            String msg = e.toString();
+            e.printStackTrace();
+            String msg = "MainController.mainData() error";
             customTaskDao.updateMsg("msg_deal_data",msg,id);
             return "error when data update: "+msg;
         }
@@ -49,7 +50,8 @@ public class MainController {
             doIndexService.creat_paperIndex();
             doIndexService.creat_yangqipaperIndex();
         }catch(Exception e){
-            String msg = e.toString();
+            e.printStackTrace();
+            String msg = "MainController.mainData() error";
             customTaskDao.updateMsg("msg_deal_data",msg,id);
             return "error when create Index: "+msg;
         }
@@ -59,7 +61,8 @@ public class MainController {
 //        try{
 //            dealDataService.dealNeo4j();
 //        }catch(Exception e){
-//            String msg = e.toString();
+//        e.printStackTrace();
+//        String msg = "MainController.mainData() error";
 //            customTaskDao.updateMsg("msg_neo4j_data",msg,id);
 //            return "error when create Neo4j: "+msg;
 //        }

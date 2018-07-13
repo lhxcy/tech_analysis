@@ -49,10 +49,10 @@ public class AuthorDao {
      * @return 对authorTemp 和  Address 联合查找，找出机构能被对上的作者的信息
      */
     public List<Expert> getAuthorForNewExpertList(){
-        String sql = "SELECT  display_name,companyid,organization\n" +
-                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.full_address = b.full_address";
 //        String sql = "SELECT  display_name,companyid,organization\n" +
-//                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.addr_no = b.addr_no";
+//                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.full_address = b.full_address";
+        String sql = "SELECT  display_name,companyid,organization\n" +
+                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.addr_no = b.addr_no";
         List<Expert> list = new LinkedList<>();
         jdbcTemplate.query(sql, new RowMapper<Integer>() {
             @Override
@@ -72,18 +72,19 @@ public class AuthorDao {
      * 将temp中能对出的数据插入Author中，并将Temp中数据删除
      */
     public void updateAuthorAndDeleteInTemp(){
-        String sql = "insert into Author (uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,full_address,addr_no,expertid)  (select distinct d.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,d.full_address,d.addr_no,c.id as expertid from Expert c inner join (SELECT a.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,a.full_address,a.addr_no,organization\n" +
-                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.full_address = b.full_address) d on c.name = d.display_name and c.enterprisename = d.organization)\n" +
-                "\n" +
-                " delete from AuthorTemp where id in (select a.id from AuthorTemp a inner join Author b on a.uid = b.uid and a.display_name = b.display_name and a.full_address = b.full_address)";
 //        String sql = "insert into Author (uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,full_address,addr_no,expertid)  (select distinct d.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,d.full_address,d.addr_no,c.id as expertid from Expert c inner join (SELECT a.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,a.full_address,a.addr_no,organization\n" +
-//                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.addr_no = b.addr_no) d on c.name = d.display_name and c.enterprisename = d.organization)\n" +
+//                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.full_address = b.full_address) d on c.name = d.display_name and c.enterprisename = d.organization)\n" +
 //                "\n" +
-//                " delete from AuthorTemp where id in (select a.id from AuthorTemp a inner join Author b on a.uid = b.uid and a.display_name = b.display_name and a.addr_no = b.addr_no)";
+//                " delete from AuthorTemp where id in (select a.id from AuthorTemp a inner join Author b on a.uid = b.uid and a.display_name = b.display_name and a.full_address = b.full_address)";
+        String sql = "insert into Author (uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,full_address,addr_no,expertid)  (select distinct d.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,d.full_address,d.addr_no,c.id as expertid from Expert c inner join (SELECT a.uid,daisng_id,seq_no,reprint,display_name,full_name,wos_standard,last_name,email_addr,a.full_address,a.addr_no,organization\n" +
+                "  FROM AuthorTemp a inner join Address b on a.uid = b.uid and a.addr_no = b.addr_no) d on c.name = d.display_name and c.enterprisename = d.organization)\n" +
+                "\n" +
+                " delete from AuthorTemp where id in (select a.id from AuthorTemp a inner join Author b on a.uid = b.uid and a.display_name = b.display_name and a.addr_no = b.addr_no)";
         try {
             jdbcTemplate.update(sql);
         } catch (Exception exc) {
-            System.out.println(exc);
+//            System.out.println(exc);
+            exc.printStackTrace();
         }
     }
 

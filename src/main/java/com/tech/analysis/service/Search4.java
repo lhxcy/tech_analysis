@@ -37,7 +37,7 @@ public class Search4 {
         int len=0;
         for (int i=0;i<str1.length;i++)
         {
-            System.out.println(i+str1[i]);
+            //System.out.println(i+str1[i]);
             if(str1[i]!=null)
             {
                 len++;
@@ -55,7 +55,7 @@ public class Search4 {
         }
         for (int i=0;i<len;i++)
         {
-            System.out.println(q[i]);
+            //System.out.println(q[i]);
         }
         System.out.println(len);
         TopDocs hits=null;
@@ -267,8 +267,8 @@ public class Search4 {
         Set<Map.Entry<String,Integer>> set2 = typelist.entrySet();
         for(Iterator<Map.Entry<String,Integer>> iter = set2.iterator(); iter.hasNext();){
             Map.Entry<String,Integer> entry = iter.next();
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
+            //System.out.println(entry.getKey());
+            //System.out.println(entry.getValue());
             JsonObject temp1=new JsonObject();
             temp1.addProperty("name",entry.getKey());
             temp1.addProperty("value",entry.getValue());

@@ -130,9 +130,9 @@ public class EdgeAndNodeImport {
         String filePath = "./src/main/resources/batchinserter.properties";
         FileReader file = new FileReader(new File(filePath).getAbsoluteFile());
         Map<String, String> config = MapUtil.load(file);//从输入流中读取属性列表（键和元素对）并返回
-        for(Map.Entry<String, String> map:config.entrySet()){
-            System.out.println(map.getKey() + " " + map.getValue());
-        }
+//        for(Map.Entry<String, String> map:config.entrySet()){
+//            System.out.println(map.getKey() + " " + map.getValue());
+//        }
         return config;
     }
 
