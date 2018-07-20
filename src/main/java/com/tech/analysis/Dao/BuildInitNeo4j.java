@@ -20,6 +20,7 @@ public class BuildInitNeo4j {
 //    private String basePath = System.getProperty("user.dir");
     private String basePath = LoadWordAndVector.class.getClassLoader().getResource("/").getPath();
     String test = basePath+File.separator+"py"+File.separator+"model"+File.separator;
+
 //    @Autowired
 //    private GetEnterpriseAndExpertData getEnterpriseAndExpertData;
 //    public static void main(String[] args) throws Exception{
