@@ -58,15 +58,15 @@ public class MainController {
         customTaskDao.updateMsg("msg_deal_data","create Index successs",id);
 
         //xcy
-//        try{
-//            dealDataService.dealNeo4j();
-//        }catch(Exception e){
-//        e.printStackTrace();
-//        String msg = "MainController.mainData() error";
-//            customTaskDao.updateMsg("msg_neo4j_data",msg,id);
-//            return "error when create Neo4j: "+msg;
-//        }
-//        customTaskDao.updateMsg("msg_neo4j_data","create Neo4j successs",id);
+        try{
+            dealDataService.dealNeo4j();
+        }catch(Exception e){
+        e.printStackTrace();
+        String msg = "MainController.mainData() error";
+            customTaskDao.updateMsg("msg_neo4j_data",msg,id);
+            return "error when create Neo4j: "+msg;
+        }
+        customTaskDao.updateMsg("msg_neo4j_data","create Neo4j successs",id);
 
         customTaskDao.update(id);
         return "success";

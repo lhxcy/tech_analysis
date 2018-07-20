@@ -19,7 +19,7 @@ public class ImportNeo4j {
     private static String neo4jdatabasepath = PropertyUtil.getProperty("neo4jdatabasepath");
     private static String neo4jpath = PropertyUtil.getProperty("neo4jpath");
 //    private static String basePath = System.getProperty("user.dir");
-    private String basePath = ImportNeo4j.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
+    private static String basePath = ImportNeo4j.class.getClassLoader().getResource("/").getPath()+File.separator+"import";
     /**
      * neo4j导入数据
      *
@@ -97,7 +97,7 @@ public class ImportNeo4j {
      * 批量导入neo4j数据库
      */
     public void batch_import(){
-        MyUnzip myUnzip = new MyUnzip();
+//        MyUnzip myUnzip = new MyUnzip();
         String import_dir = basePath+File.separator;
         String csv_dir = basePath+File.separator+"file"+File.separator+"test"+File.separator;
         try {
@@ -107,9 +107,9 @@ public class ImportNeo4j {
             System.err.println(deleteGraph_db);
 //            java -jar buildNeo4jDatabase.jar /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis /home/zhzy/Downloads/xcy/Main_Tech/paperData4
 
-//            String buildBaseNeo4j = "java -jar "+basePath+File.separator+"buildNeo4jDatabase.jar "+
-//                    basePath+" "+neo4jdatabasepath+"/paperData1";
-//            System.err.println(buildBaseNeo4j);
+            String buildBaseNeo4j = "java -jar "+basePath+File.separator+"buildNeo4jDatabase.jar "+
+                    basePath+" "+neo4jdatabasepath;
+            System.err.println(buildBaseNeo4j);
 
 //            String buildBaseNeo4j= "java -jar buildNeo4jDatabase.jar /home/zhzy/Downloads/xcy/Main_Tech/tech_analysis /home/zhzy/Downloads/xcy/Main_Tech/paperData7";
 
@@ -150,15 +150,15 @@ public class ImportNeo4j {
 
             runConsoleOrder(deleteGraph_db);
             System.out.println("删除成功");
-//            runConsoleOrder(buildBaseNeo4j);
+            runConsoleOrder(buildBaseNeo4j);
 
-            myUnzip.unZipFiles(new File(neo4jdatabasepath+".zip"), neo4jdatabasepath+"/");
+//            myUnzip.unZipFiles(new File(neo4jdatabasepath+".zip"), neo4jdatabasepath+"/");
 
 //            myUnzip.unZipFiles(new File("/usr/neo4j3.1.0/data/databases/paperData1.zip"), "/usr/neo4j3.1.0/data/databases/");
 
-            System.out.println("解压成功");
+//            System.out.println("解压成功");
             runConsoleOrder(keyImport_no_plate);
-//            runConsoleOrder(yearKeyImport_no_plate);
+            runConsoleOrder(yearKeyImport_no_plate);
 //            runConsoleOrder(keyImport);
 //            runConsoleOrder(yearKeyImport);
             startNeo4j();
@@ -197,15 +197,17 @@ public class ImportNeo4j {
     }
 
     public static void main(String[] args) {
-//        String import_dir = basePath+File.separator;
-//        String csv_dir = basePath+File.separator+"file"+File.separator;
+        String import_dir = basePath+File.separator;
+        String csv_dir = basePath+File.separator+"file"+File.separator;
+        System.out.println(import_dir);
+        System.out.println(csv_dir);
 //        String parm = neo4jpath+" stop";
 //        runConsoleOrder(parm);
-//        String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
-//                neo4jdatapath+"/paperData1 " +
-//                csv_dir+"keywordsKey.csv " +
-//                csv_dir+"relationshipKey.csv";
-//        runConsoleOrder(keyImport_no_plate);
-        new ImportNeo4j().batch_import();
+        String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
+                "/usr/neo4j3.1.0/data/databases/Data2 " +
+                csv_dir+"yearKeywordsKey.csv " +
+                csv_dir+"yearRelationshipKey.csv";
+        runConsoleOrder(keyImport_no_plate);
+//        new ImportNeo4j().batch_import();
     }
 }

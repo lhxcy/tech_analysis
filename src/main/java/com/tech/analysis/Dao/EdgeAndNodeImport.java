@@ -76,7 +76,9 @@ public class EdgeAndNodeImport {
     }
     public void InitializeInserter(File filePath) throws Exception {
         inserter = BatchInserters.inserter(filePath);//使用BatchInserter分批导入大量数据
+        System.out.println("ppppppppp");
         indexProvider = new LuceneBatchInserterIndexProvider(inserter);
+        System.out.println("hhhhhhhhhh");
         //批插入过程中的索引使用BatchInserterIndexProvider提供的BatchInserterIndex完成
 
         Map<String, String> exactConfig = new HashMap<String, String>();

@@ -39,11 +39,6 @@ public class DealDataController {
     }
 
 
-    @RequestMapping("/buildNeo4j")
-    public void getData(){
-        dealDataService.dealNeo4j();
-    }
-
     /**
      * 根据历史预测关键字
      */
@@ -55,10 +50,10 @@ public class DealDataController {
     /**
      * 得到构建neo4j的基础数据
      */
-//    @RequestMapping("/getNeo4jDataBase")
-//    public void getNeo4jBaseData(){
-//        dealDataService.getNeo4jDataBase();
-//    }
+    @RequestMapping("/getNeo4jDataBase")
+    public void getNeo4jBaseData(){
+        dealDataService.getSqlDatabuildNeo4j();
+    }
 
     @RequestMapping("/analysisword")
     public Object analysiswords(@RequestParam String word,@RequestParam Integer number){
@@ -68,5 +63,10 @@ public class DealDataController {
 //    public void build(){
 //        dealDataService.build();
 //    }
+
+    @RequestMapping("/buildNeo4j")//重建neo4j数据库
+    public void buildNeo4j(){
+        dealDataService.dealNeo4j();
+    }
 
 }

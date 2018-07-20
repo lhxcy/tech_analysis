@@ -23,17 +23,21 @@ public class GetEnterpriseAndExpertData {
     private JdbcTemplate jdbcTemplate;
 //    private String basePath = System.getProperty("user.dir");
     private String basePath = GetEnterpriseAndExpertData.class.getClassLoader().getResource("/").getPath();
+    private HashMap<String,String> UID2Pubyear = null;
     public void getAllData(){
+        UID2Pubyear = getPaperUIDAndPubyear();
+
         //得到一片论文所属专家的对象
-//        getSQLExpertData();
+        System.out.println("start to get data");
+        getSQLExpertData();//expertCooperateForImport
         //得到论文所属机构的对象
-//        getPaperInstitutionFormSql();
+        getPaperInstitutionFormSql();//paperInstitutionForImport
         //得到专家和企业的对应关系对象
-//        getSQLExpertAndEnterpriseData();
+        getSQLExpertAndEnterpriseData();//enterpriseAndExpertForImport  name2EnterpriseForImport
         //得到机构和上级机构数据
         getInstitutionAndSuper();
         //得到机构详细信息
-        getInstitutionDetailInfo();
+        getInstitutionDetailInfo();//institutionDetailInfoForImport
     }
 
     /**
@@ -70,6 +74,33 @@ public class GetEnterpriseAndExpertData {
         writeCodeAndName(code2name,basePath+File.separator+"py"+File.separator+"model","code2nameForImport");
     }
 
+    /**
+     * 拿到从UID到时间的映射
+     */
+    public HashMap<String,String> getPaperUIDAndPubyear(){
+        String sql ="select UID,pubyear from paper";
+        HashMap<String,String> UID2Pubyear = new HashMap<>();
+        List<String> UIDAndPubyearString = jdbcTemplate.query(sql, new RowMapper<String>(){
+            @Override
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                String UID =  rs.getString("UID");
+                String pubyear =  rs.getString("pubyear");
+                if (pubyear == null || "".equals(pubyear))
+                    return "";
+//                System.out.println(UID.trim().replace(',',' ')+","+pubyear.trim().replace(',',' '));
+                return (UID.trim().replace(',',' ')+","+pubyear.trim().replace(',',' '));
+            }
+        });
+
+        for (String s : UIDAndPubyearString){
+            if (s == null || "".equals(s)) continue;
+            String[] splitString = s.split(",");
+            if (splitString.length<2) continue;
+            UID2Pubyear.put(splitString[0],splitString[1]);
+        }
+        System.out.println("UID2Pubyear size: "+UID2Pubyear.size());
+        return UID2Pubyear;
+    }
 
     /**
      * 另外还有一个表存储 id，机构名，level，provinceid,province,city,cityid，
@@ -77,7 +108,8 @@ public class GetEnterpriseAndExpertData {
      */
     public void getInstitutionDetailInfo(){
         System.out.println("start get InstitutionDetailInfo data from sql");
-        String sql ="select id,name,level,provinceid,province,city,cityid from EnterpriseInfo";
+            String sql ="select ei.id,ei.name,level,provinceid,p.name as province,c.name as city," +
+                    "cityid from EnterpriseInfo ei left join province p on p.id=ei.provinceid left join city c on c.id=ei.cityid";
         List<String> institutionDetailInfo = jdbcTemplate.query(sql, new RowMapper<String>(){
             @Override
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -89,10 +121,15 @@ public class GetEnterpriseAndExpertData {
                 String city =  rs.getString("city");
                 String cityid =  rs.getString("cityid");
                 if (name == null || "".equals(name))
-//                if (institutionName == null || "".equals(institutionName) ||
-//                        institutionName.contains("C") || institutionName.contains("T"))
                     return "";
-//                System.out.println(uid+","+companyid+","+institutionName);
+                if (province == null || "".equals(province))province = "null";
+                if (provinceid == null || "".equals(provinceid))provinceid = "null";
+                if (city == null || "".equals(city))city = "null";
+                if (cityid == null || "".equals(cityid))cityid = "null";
+                if (level == null || "".equals(level))level = "null";
+
+                System.out.println((sql_id.trim()+","+name+","+level+","+provinceid+
+                        ","+province+","+city+","+cityid).replace("\n"," "));
                 return (sql_id.trim()+","+name+","+level.trim()+","+provinceid.trim()+
                         ","+province.trim()+","+city.trim()+","+cityid.trim()).replace("\n"," ");
             }
@@ -112,20 +149,21 @@ public class GetEnterpriseAndExpertData {
         HashMap<String,HashMap<String,String>> tempInstitutionData = new HashMap<>();
         HashMap<String,LinkedList<String>> institutionData = new HashMap<>();
         System.out.println("start get paperInstution data from sql");
-        String sql ="select UID,pubyear,companyid,organization from Address";///////////////不一定有pubyear////////////////
+        String sql ="select UID,companyid,organization from Address";///////////////不一定有pubyear////////////////
         List<String> sqlDataList = jdbcTemplate.query(sql, new RowMapper<String>(){
             @Override
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
                 String uid =  rs.getString("UID");
-                String pubyear =  rs.getString("pubyear");
+//                String pubyear =  rs.getString("pubyear");
                 String companyid =  rs.getString("companyid");
                 String institutionName =  rs.getString("organization");
                 if (institutionName == null || "".equals(institutionName))
 //                if (institutionName == null || "".equals(institutionName) ||
 //                        institutionName.contains("C") || institutionName.contains("T"))
                     return "";
-//                System.out.println(uid+","+companyid+","+institutionName);
-                return (uid.trim()+","+pubyear+"@@"+companyid.trim()+"@@"+institutionName.trim()).replace("\n"," ");
+//                System.out.println((uid.trim()+"@@"+companyid.trim()+"@@"+institutionName.trim()).replace("\n"," "));
+//                return (uid.trim()+","+pubyear+"@@"+companyid.trim()+"@@"+institutionName.trim()).replace("\n"," ");
+                return (uid.trim()+"@@"+companyid.trim()+"@@"+institutionName.trim()).replace("\n"," ");
             }
         });
         for (String string : sqlDataList){
@@ -147,17 +185,17 @@ public class GetEnterpriseAndExpertData {
 
 
         //去除companyid
-        int count = 0;
-        for (String key : tempInstitutionData.keySet()){
+//        int count = 0;
+        for (String uid : tempInstitutionData.keySet()){
 //            System.out.println(++count);
 //            if (institutionData.size() > 200000) break;
-            if (!institutionData.containsKey(key)){
-                HashMap<String,String> tempMap = tempInstitutionData.get(key);
+            if (!institutionData.containsKey(uid)){
+                HashMap<String,String> tempMap = tempInstitutionData.get(uid);
                 LinkedList<String> tempList = new LinkedList<>();
                 for (String companyid : tempMap.keySet()){
                     tempList.add(tempMap.get(companyid));
                 }
-                institutionData.put(key,tempList);
+                institutionData.put(uid,tempList);
             }
         }
 
@@ -192,19 +230,19 @@ public class GetEnterpriseAndExpertData {
         HashMap<String,LinkedList<String>> expertData = new HashMap<>();
         System.out.println("start get expert data from sql");
 //        String sql ="select full_name from Author where UID in( select UID from paper)";
-        String sql ="select UID,id,pubyear,full_name from Author";////////////////不一定有pubyear
+        String sql ="select UID,id,full_name from Author";////////////////不一定有pubyear
         List<String> sqlDataList = jdbcTemplate.query(sql, new RowMapper<String>(){
             @Override
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
                 String uid =  rs.getString("UID");
                 String name =  rs.getString("full_name");
                 String sql_id =  rs.getString("id");
-                String pubyear =  rs.getString("pubyear");
+//                String pubyear =  rs.getString("pubyear");
 //                name = name.replaceAll("[a-zA-Z]","" );
                 if (name == null || "".equals(name))
                     return "";
-//                System.out.println(uid+","+name);
-                return uid.trim()+","+sql_id.trim()+","+pubyear.trim()+"@@"+name.trim();
+//                System.out.println(uid.trim()+","+sql_id.trim()+"@@"+name.trim());
+                return uid.trim()+"@@"+sql_id.trim()+","+name.trim();
             }
         });
 
@@ -212,8 +250,9 @@ public class GetEnterpriseAndExpertData {
         for (String string : sqlDataList){
             String[] stringSplit = string.split("@@");
             if (stringSplit.length < 2) continue;
+//            String[] uidAndsqlid = stringSplit[0].split(",");
 //            System.out.println(++count);
-//            if (expertData.size() > 200000) break;
+//            if (expertData.size() > 200000) break;//////////////////////////////////
             if (expertData.get(stringSplit[0]) == null){
                 LinkedList<String> tempList = new LinkedList<>();
                 tempList.add(stringSplit[1]);
@@ -379,6 +418,7 @@ public class GetEnterpriseAndExpertData {
 //            System.out.println(++count);
 //            if (map.size() > 200000) break;
             String[] stringSplit = string.split(",");
+            if (stringSplit.length < 2) continue;
             map.put(stringSplit[0],stringSplit[1]);
         }
 //        System.out.println("data size: " + map.size());
@@ -424,6 +464,7 @@ public class GetEnterpriseAndExpertData {
                 for (String expertName : enterpriseAndExpert.get(enterpriseName)){
                     temp += ","+ expertName;
                 }
+//                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
                 ++countline;
@@ -478,6 +519,7 @@ public class GetEnterpriseAndExpertData {
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String expertName : name2Enterprise.keySet()){
                 String temp = expert2id.get(expertName)+","+expertName+","+name2Enterprise.get(expertName);
+//                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
                 ++countline;
@@ -528,11 +570,22 @@ public class GetEnterpriseAndExpertData {
 
             // 将格式化后的字符串写入文件
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
-            for (String key : expertData.keySet()){
-                String temp = key;
-                for (String expertName : expertData.get(key)){
-                    temp += ","+expertName;
+            for (String uid : expertData.keySet()){
+//                String[] splitString = key.split(",");
+//                if (splitString.length<2) continue;
+                String temp = uid;
+                boolean flagsql = false;
+                for (String expertName : expertData.get(uid)){
+//                    System.out.println(expertName);
+                    String[] sqlidAndname = expertName.split(",");
+                    if (sqlidAndname.length < 2)continue;
+                    if (!flagsql){
+                        temp += ","+sqlidAndname[0]+","+UID2Pubyear.get(uid)+","+sqlidAndname[1];
+                        flagsql = true;
+                    }else
+                        temp += ","+sqlidAndname[1];
                 }
+                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
                 ++countline;
@@ -584,10 +637,11 @@ public class GetEnterpriseAndExpertData {
             // 将格式化后的字符串写入文件
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String uid : institutionData.keySet()){
-                String temp = uid;
+                String temp = uid+","+UID2Pubyear.get(uid);
                 for (String institutionName : institutionData.get(uid)){
                     temp += ","+institutionName;
                 }
+//                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
                 ++countline;
@@ -633,6 +687,7 @@ public class GetEnterpriseAndExpertData {
             for (String tempcodeandname : codeandname.keySet()){
                 String temp = tempcodeandname;
                     temp += ","+ codeandname.get(tempcodeandname);
+                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
                 ++countline;
@@ -678,6 +733,7 @@ public class GetEnterpriseAndExpertData {
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String info : institutionDetailInfo){
                 if (info == null || "".equals(info)) continue;
+//                System.out.println(info);
                 write.write(info);
                 write.write('\n');
                 ++countline;

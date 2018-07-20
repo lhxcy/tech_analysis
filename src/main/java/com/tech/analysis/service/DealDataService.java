@@ -55,7 +55,7 @@ public class DealDataService {
     /**
      * 得到生成企业和人的关系图所需要的数据
      */
-    public void buildNeo4j(){
+    public void getSqlDatabuildNeo4j(){
         buildAuthorAndInstitution.getDataAndBuildCSV();
     }
 
@@ -63,8 +63,9 @@ public class DealDataService {
      * 更新数据库
      */
     public void dealNeo4j(){
-        generateCSV.buildKeyAndRelationCSV();
-        importNeo4j.batch_import();
+        buildAuthorAndInstitution.getDataAndBuildCSV();//得到基础库数据
+        generateCSV.buildKeyAndRelationCSV();//得到keywords数据
+        importNeo4j.batch_import();//构建数据库插入数据
     }
 
     /**

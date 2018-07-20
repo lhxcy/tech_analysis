@@ -21,8 +21,9 @@ import org.wltea.analyzer.lucene.IKAnalyzer;
 
 @Service
 public class DoIndexService {
-    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
+
 //        private static String basePath = System.getProperty("user.dir");
+    private static String basePath = DoIndexService.class.getClassLoader().getResource("/").getPath();
     public  static String creatIndex()
     {
         final String cfn = "com.microsoft.sqlserver.jdbc.SQLServerDriver";

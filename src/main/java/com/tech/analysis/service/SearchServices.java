@@ -23,8 +23,8 @@ import java.util.List;
 
 public class SearchServices
 {
-    private static String basePath = SearchServices.class.getClassLoader().getResource("/").getPath();
 //    private static String basePath = System.getProperty("user.dir");
+    private static String basePath = SearchServices.class.getClassLoader().getResource("/").getPath();
     private static Logger logyangqi = LoggerFactory.getLogger("yxjyangqi");
     private static Logger logpaper = LoggerFactory.getLogger("yxjpaper");
     private  static Directory directory=null;

@@ -1,6 +1,7 @@
 package com.tech.analysis.Dao;
 
 import com.tech.analysis.entity.KeywordEntity;
+import com.tech.analysis.util.PropertyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,6 +22,7 @@ import java.util.List;
 public class LoadWordAndVector {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private static String pythonpath = PropertyUtil.getProperty("pythonpath");
 //    private String basePath = System.getProperty("user.dir");
     private String basePath = LoadWordAndVector.class.getClassLoader().getResource("/").getPath();
 
@@ -131,7 +133,7 @@ public class LoadWordAndVector {
         try {
 //            buildKeyDict();
             System.out.println("Starting execute python word2vec model");
-            String[] parm = new String[] { "/usr/bin/python3",
+            String[] parm = new String[] { pythonpath,
                     basePath+File.separator+"py"+File.separator+"model"+File.separator+"Word2VectorBasedGensim.py"};
 //                    basePath+File.separator+"py"+File.separator+"model"+File.separator+"Word2VectorBasedGensim.py"};
 
