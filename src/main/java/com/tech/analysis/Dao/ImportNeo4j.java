@@ -25,6 +25,7 @@ public class ImportNeo4j {
      *
      */
 
+
 //    public void importCSV(){
 //        String keywoeds ="LOAD CSV WITH HEADERS  FROM \"file:///keywords.csv\" AS line"+
 //                " MERGE (p:keyNode{id:line.id,name:line.name})";
