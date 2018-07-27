@@ -30,13 +30,13 @@ public class GetEnterpriseAndExpertData {
 
         //得到一片论文所属专家的对象
         System.out.println("start to get data");
-//        getSQLExpertData();//expertCooperateForImport
+        getSQLExpertData();//expertCooperateForImport
         //得到论文所属机构的对象
-//        getPaperInstitutionFormSql();//paperInstitutionForImport
+        getPaperInstitutionFormSql();//paperInstitutionForImport
         //得到专家和企业的对应关系对象
         getSQLExpertAndEnterpriseData();//enterpriseAndExpertForImport  name2EnterpriseForImport
         //得到机构和上级机构数据
-//        getInstitutionAndSuper();
+        getInstitutionAndSuper();
         //得到机构详细信息
         getInstitutionDetailInfo();//institutionDetailInfoForImport
     }
