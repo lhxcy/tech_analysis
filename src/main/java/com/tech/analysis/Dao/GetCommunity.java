@@ -21,6 +21,7 @@ import static org.neo4j.driver.v1.Values.parameters;
 public class GetCommunity {
     @Autowired
     private WordModel wordModel;
+//    LinkedList<String> filterwords = GetFilterWords.getFilterWordsFromSQL();
 
     public String getJsonStringCommunity(String query){
         List<String> list = UtilRead.readQuery();
@@ -149,7 +150,7 @@ public class GetCommunity {
 
 
     public HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> getLocalCommubityData(List<String> list){
-//        LinkedList<String> locao_words = new LinkedList<>();
+//        LinkedList<String> filterwords = GetFilterWords.getFilterWordsFromSQL();
         HashMap<String,Integer> locao_words = new HashMap<>();
         HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>> community = new HashMap<Integer,HashMap<Integer,HashMap<String,Integer>>>();
         HashMap<Integer,HashMap<String,Integer>> sonCommunity = new HashMap<Integer,HashMap<String,Integer>>();
@@ -184,6 +185,7 @@ public class GetCommunity {
                     int name_times = Integer.parseInt(record.get("n_times").asString());
 //                    System.out.println(name_times);
                     String name = record.get("n_name").asString();
+//                    if(filterwords.contains(name))continue;
                     locao_words.put(name,name_times);
                     templist.put(name,name_times);
 //                    templist.put(record.get("n_name").asString(),name_times);
@@ -292,6 +294,7 @@ public class GetCommunity {
 //                    System.out.println(name_times);
                     String name = record.get("n_name").asString();
 //                    locao_words.add(name);
+//                    if(filterwords.contains(name))continue;
                     templist.put(name,name_times);
 //                    templist.put(record.get("n_name").asString(),name_times);
                     ++good;

@@ -205,10 +205,15 @@ public class ImportNeo4j {
         System.out.println(csv_dir);
 //        String parm = neo4jpath+" stop";
 //        runConsoleOrder(parm);
+//        String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
+//                "/usr/neo4j3.1.0/data/databases/Data3 " +
+//                csv_dir+"yearKeywordsKey.csv " +
+//                csv_dir+"yearRelationshipKey.csv";
+//        runConsoleOrder(keyImport_no_plate);
         String keyImport_no_plate = "/bin/bash " + import_dir+"import.sh " +
-                "/usr/neo4j3.1.0/data/databases/Data2 " +
-                csv_dir+"yearKeywordsKey.csv " +
-                csv_dir+"yearRelationshipKey.csv";
+                "/usr/neo4j3.1.0/data/databases/Data3 " +
+                csv_dir+"keywordsKey.csv " +
+                csv_dir+"relationshipKey.csv";
         runConsoleOrder(keyImport_no_plate);
 //        new ImportNeo4j().batch_import();
     }

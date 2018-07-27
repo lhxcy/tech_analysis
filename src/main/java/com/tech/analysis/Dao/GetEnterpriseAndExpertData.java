@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Created by XCY on 2018/5/23.
  * 从sql中得到专家、企业的信息
+ * MATCH (n:EnterpriseInfo{name:"中国电子科技集团公司,第十三研究所"}) RETURN n LIMIT 25
  */
 @Repository
 public class GetEnterpriseAndExpertData {
@@ -29,13 +30,13 @@ public class GetEnterpriseAndExpertData {
 
         //得到一片论文所属专家的对象
         System.out.println("start to get data");
-        getSQLExpertData();//expertCooperateForImport
+//        getSQLExpertData();//expertCooperateForImport
         //得到论文所属机构的对象
-        getPaperInstitutionFormSql();//paperInstitutionForImport
+//        getPaperInstitutionFormSql();//paperInstitutionForImport
         //得到专家和企业的对应关系对象
         getSQLExpertAndEnterpriseData();//enterpriseAndExpertForImport  name2EnterpriseForImport
         //得到机构和上级机构数据
-        getInstitutionAndSuper();
+//        getInstitutionAndSuper();
         //得到机构详细信息
         getInstitutionDetailInfo();//institutionDetailInfoForImport
     }
@@ -128,10 +129,10 @@ public class GetEnterpriseAndExpertData {
                 if (cityid == null || "".equals(cityid))cityid = "null";
                 if (level == null || "".equals(level))level = "null";
 
-                System.out.println((sql_id.trim()+","+name+","+level+","+provinceid+
-                        ","+province+","+city+","+cityid).replace("\n"," "));
-                return (sql_id.trim()+","+name+","+level.trim()+","+provinceid.trim()+
-                        ","+province.trim()+","+city.trim()+","+cityid.trim()).replace("\n"," ");
+//                System.out.println((sql_id.trim()+"@@@"+name+"@@@"+level.trim()+"@@@"+provinceid.trim()+
+//                        "@@@"+province.trim()+"@@@"+city.trim()+"@@@"+cityid.trim()).replace("\n"," "));
+                return (sql_id.trim()+"@@@"+name+"@@@"+level.trim()+"@@@"+provinceid.trim()+
+                        "@@@"+province.trim()+"@@@"+city.trim()+"@@@"+cityid.trim()).replace("\n"," ");
             }
         });
         System.out.println("institutionDetailInfo size: "+institutionDetailInfo);
@@ -142,6 +143,7 @@ public class GetEnterpriseAndExpertData {
      * 返回  论文uid对应的机构（论文uid，发表该论文的机构的id，发表该论文的机构的名字）///////////////
      * HashMap<String,HashMap<String,String>> CSCD:5606807,时间@@46036@@重庆声光电智联电子有限公司
      * uid,论文时间，机构名，，，机构名，
+     * 中国电子科技集团公司,
      * @return
      */
 //    public HashMap<String,LinkedList<String>> getPaperInstitutionFormSql(){
@@ -407,7 +409,7 @@ public class GetEnterpriseAndExpertData {
                 if (id == null || name == null)
                     return "";
 //                System.out.println(id+","+name);
-                return id.trim()+","+name.trim();
+                return id.trim()+"@@"+name.trim();
             }
         });
 
@@ -417,7 +419,7 @@ public class GetEnterpriseAndExpertData {
             if (string == null || "".equals(string)) continue;
 //            System.out.println(++count);
 //            if (map.size() > 200000) break;
-            String[] stringSplit = string.split(",");
+            String[] stringSplit = string.split("@@");
             if (stringSplit.length < 2) continue;
             map.put(stringSplit[0],stringSplit[1]);
         }
@@ -462,7 +464,7 @@ public class GetEnterpriseAndExpertData {
             for (String enterpriseName : enterpriseAndExpert.keySet()){
                 String temp = enterpriseName;
                 for (String expertName : enterpriseAndExpert.get(enterpriseName)){
-                    temp += ","+ expertName;
+                    temp += "@@@"+ expertName;
                 }
 //                System.out.println(temp);
                 write.write(temp);
@@ -518,7 +520,7 @@ public class GetEnterpriseAndExpertData {
             // 将格式化后的字符串写入文件
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String expertName : name2Enterprise.keySet()){
-                String temp = expert2id.get(expertName)+","+expertName+","+name2Enterprise.get(expertName);
+                String temp = expert2id.get(expertName)+"@@@"+expertName+"@@@"+name2Enterprise.get(expertName);
 //                System.out.println(temp);
                 write.write(temp);
                 write.write('\n');
@@ -637,9 +639,9 @@ public class GetEnterpriseAndExpertData {
             // 将格式化后的字符串写入文件
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String uid : institutionData.keySet()){
-                String temp = uid+","+UID2Pubyear.get(uid);
+                String temp = uid+"@@@"+UID2Pubyear.get(uid);
                 for (String institutionName : institutionData.get(uid)){
-                    temp += ","+institutionName;
+                    temp += "@@@"+institutionName;
                 }
 //                System.out.println(temp);
                 write.write(temp);
@@ -733,7 +735,7 @@ public class GetEnterpriseAndExpertData {
             Writer write = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             for (String info : institutionDetailInfo){
                 if (info == null || "".equals(info)) continue;
-//                System.out.println(info);
+                System.out.println(info);
                 write.write(info);
                 write.write('\n');
                 ++countline;
